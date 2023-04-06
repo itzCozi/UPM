@@ -11,7 +11,9 @@ debug = True
 class globals:
   user = 'Coope'  #os.getlogin()
   powershell = str('C:/Windows/System32/powershell.exe')
-  web_file = str(f'https://github.com/itzCozi/Version-Control-Project/blob/main/project/{__file__}')
+  web_file = str(
+    f'https://github.com/itzCozi/Version-Control-Project/blob/main/project/{__file__}'
+  )
   python_Path = str(f'C:/Users/{user}/AppData/Local/Programs/Python/Python311')
   main_Dir = str(f'C:/Users/{user}/upm')
   scoop_Dir = str(f'C:/Users/{user}/scoop')
@@ -73,11 +75,32 @@ class commands:
     if os.path.exists(file):
       with open(file, 'r') as Fin:
         file_content = Fin.read()
-        new_Dir = str(f'{globals.upm_files.tracked_Dir}/{file}')
+        formatted_file = file.replace('/', '-')
+        new_Dir = str(f'{globals.upm_files.tracked_Dir}/{formatted_file}')
         with open(new_Dir, 'w') as Fout:
           Fout.write(file_content)
     else:
       print('ERROR: File cannont be found.')
+
+  def update(file):
+    # Doesnt work yet
+    for r, d, f in os.walk(globals.upm_files.tracked_Dir):
+      for _file in f:
+        formatted_file = file.replace('/', '-')
+        if formatted_file == _file:
+          _filepath = os.path.join(r, _file)
+          newFile_hash = _upm.utility.hashfile(file)
+          savedFile_hash = _upm.utility.hashfile(_filepath)
+          if savedFile_hash != newFile_hash:
+            with open(file, 'r') as Fout:
+              file_content = Fout.read()
+              with open(_file, 'w') as Fin:
+                Fin.write(file_content)
+          else:
+            print('Tracked files are already saved.')
+        else:
+          print('Cannot find tracked file.')
+
 
 class _upm:
 
@@ -112,11 +135,15 @@ class _upm:
 
       if not os.path.exists(globals.python_Path):
         python_install = 'https://www.python.org/downloads/release/python-3110/'
-        print(f'Python3.11 not installed please download it here: {python_install}')
+        print(
+          f'Python3.11 not installed please download it here: {python_install}'
+        )
 
       if not os.path.exists(globals.scoopShim_File):
         with open(globals.scoopShim_File, 'w') as file:
-          file.write(f'@"{globals.python_Path + "/python.exe"}" "{globals.scoopApp_File}" %*')
+          file.write(
+            f'@"{globals.python_Path + "/python.exe"}" "{globals.scoopApp_File}" %*'
+          )
       if debug:
         print('Program file ' + globals.scoopShim_File + ' !MISSING!')
 
@@ -125,49 +152,23 @@ class _upm:
         if debug:
           print('Program file ' + globals.scoopApp_File + ' !MISSING!')
 
-      def hashFileURL(url):
-        newFile = str(globals.scoopApp_Dir + '/newfile.txt')
-
-        with open(newFile, 'w') as f:
-          f.write(requests.get(url).text)
-          f.close()
-
-        BUF_SIZE = os.path.getsize(newFile)
-        sha256 = hashlib.sha256()
-        with open(newFile, 'rb') as f:
-          while True:
-            data = f.read(BUF_SIZE)
-            if not data:
-              break
-
-        sha256.update(data)
+    def hashfile(file):
+      BUF_SIZE = os.path.getsize(file)
+      sha256 = hashlib.sha256()
+      with open(file, 'rb') as f:
+        while True:
+          data = f.read(BUF_SIZE)
+          if not data:
+            break
 
         f.close()
-        os.remove(newFile)
-
-        return sha256.hexdigest()
-
-      def hashFileLOCAL(file):
-        BUF_SIZE = os.path.getsize(file)
-        sha256 = hashlib.sha256()
-        with open(file, 'rb') as f:
-          while True:
-            data = f.read(BUF_SIZE)
-            if not data:
-              break
 
         sha256.update(data)
-
-        f.close()
         return sha256.hexdigest()
 
-      def install(URL, Destination, NewName):
-        # Download and write to file
-        file_content = requests.get(URL)
-        open(Destination + '/' + NewName, 'wb').write(file_content.content)
-        if debug:
-          print('Downloaded file to: ' + Destination)
-
-
-print(globals.upm_files.current_Dir)
-commands.track('test.txt')
+    def install(URL, Destination, NewName):
+      # Download and write to file
+      file_content = requests.get(URL)
+      open(Destination + '/' + NewName, 'wb').write(file_content.content)
+      if debug:
+        print('Downloaded file to: ' + Destination)
