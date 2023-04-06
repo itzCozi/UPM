@@ -2,45 +2,164 @@
 # Using CMD args: https://www.geeksforgeeks.org/command-line-arguments-in-python/#
 import hashlib
 import os, sys
+import requests
+import subprocess
+
+debug = True
 
 
 class globals:
   user = 'Coope'  #os.getlogin()
-  scoop_Dir = str(f'C:/{user}/scoop')
-  scoopApp_Dir = str(f'{scoop_Dir}/')
+  powershell = str('C:/Windows/System32/powershell.exe')
+  web_file = str(f'https://github.com/itzCozi/Version-Control-Project/blob/main/project/{__file__}')
+  python_Path = str(f'C:/Users/{user}/AppData/Local/Programs/Python/Python311')
+  main_Dir = str(f'C:/Users/{user}/upm')
+  scoop_Dir = str(f'C:/Users/{user}/scoop')
+  scoopApp_Dir = str(f'{scoop_Dir}/apps/upm')
+  scoopShim_File = str(f'{scoop_Dir}/shims/upm.cmd')
+  scoopApp_File = str(f'{scoopApp_Dir}/upm.py')
   CC = lambda: os.system('cls' if os.name in ('nt', 'dos') else 'clear')
-  debug = True
 
 
-class _upm():
+class upm_files:
+  current_Dir = os.getcwd()
+  repository = str(current_Dir + '/upm')
+  tracked_Dir = str(repository + '/tracked_files')
+  commits = str(repository + '/commits')
+  changes_File = str(repository + '/changes.txt')
+  manifest = str(repository + '/manifest.txt')
 
-  def setup():
-    if os.path.exists(_2PT.scoop_Dir):
+
+class commands:
+
+  def init():
+    # Creates and sets up the folder system in current folder that archives changes
+    try:
+      os.mkdir(upm_files.repository)
+      os.mkdir(upm_files.tracked_Dir)
+      os.mkdir(upm_files.commits)
+      open(upm_files.changes_File, 'w')
+      open(upm_files.manifest, 'w')
+      print('Repository successfully created!')
+    except:
+      print('ERROR: An error occured, repository not created.')
+
+  def commit(directory, message):
+    if os.path.exists(directory):
+      formatted_msg = message.replace(' ', '-')
+      commit_Dir = f'{upm_files.commits}/{formatted_msg}'
+      if not os.path.exists(commit_Dir):
+        os.mkdir(commit_Dir)
+
+      for r, d, f in os.walk(directory):
+        for folder in d:
+          new_Dir = str(f'{commit_Dir}/{directory}')
+          new_File = str(f'{new_Dir}/{folder}')
+          if not os.path.exists(new_Dir):
+            os.mkdir(new_Dir)
+          if not os.path.exists(new_File):
+            os.mkdir(new_File)
+          
+        for file in f:
+          filepath = os.path.join(r, file)
+          print(f'{commit_Dir}/{filepath}')
+          with open(f'{commit_Dir}/{filepath}', 'w') as _file:
+            _file.write(open(filepath, 'r').read())
+          
+        
+        
+
+
+class _upm:
+
+  def get_files(baseDir):
+    files = []
+    for r, d, f in os.walk(baseDir):
+      for file in f:
+        filepath = os.path.join(r, file)
+      if os.path.exists(filepath):
+        files.append(filepath)
+
+    return files
+
+  
+  class utility:
+
+    def setup():
+      if os.path.exists(globals.scoop_Dir):
+        if debug:
+          print("Scoop is already installed. ")
+        pass
+      else:
+        subprocess.call(globals.powershell + 'iwr -useb get.scoop.sh | iex')
+
+      if not os.path.exists(globals.main_Dir):
+        os.mkdir(globals.main_Dir)
+      else:
+        pass
+      if not os.path.exists(globals.scoopApp_Dir):
+        os.mkdir(globals.scoopApp_Dir)
+      else:
+        pass
+
+      if not os.path.exists(globals.python_Path):
+        python_install = 'https://www.python.org/downloads/release/python-3110/'
+        print(f'Python3.11 not installed please download it here: {python_install}')
+
+      if not os.path.exists(globals.scoopShim_File):
+        with open(globals.scoopShim_File, 'w') as file:
+          file.write(f'@"{globals.python_Path + "/python.exe"}" "{globals.scoopApp_File}" %*')
       if debug:
-        print("Scoop is already installed. ")
-      pass
-    else:
-      subprocess.call(_2PT.powershell + 'iwr -useb get.scoop.sh | iex')
+        print("Program file " + globals.scoopShim_File + " !MISSING!")
 
-    if not os.path.exists(_2PT.main_Dir):
-      os.mkdir(_2PT.main_Dir)
-    else:
-      pass
-    if not os.path.exists(_2PT.scoopApp_Dir):
-      os.mkdir(_2PT.scoopApp_Dir)
-    else:
-      pass
+      if not os.path.exists(globals.scoopApp_File):
+        _upm.utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
+        if debug:
+          print("Program file " + globals.scoopApp_File + " !MISSING!")
 
-    if not os.path.exists(_2PT.scoopShim_File):
-      with open(_2PT.scoopShim_File, 'w') as file:
-        file.write(
-          f'@"{_2PT.python_Path + "/Python311/python.exe"}" "{_2PT.scoopApp_File}" %*'
-        )
-      if debug:
-        print("Program file " + _2PT.scoopShim_File + " !MISSING!")
+      def hashFileURL(url):
+        newFile = str(globals.scoopApp_Dir + '/newfile.txt')
 
-    if not os.path.exists(_2PT.scoopApp_File):
-      _2PT.utility.install(_2PT.console_WebFile, _2PT.scoopApp_Dir, "2PT",
-                           ".py")
-      if debug:
-        print("Program file " + _2PT.scoopApp_File + " !MISSING!")
+        with open(newFile, "w") as f:
+          f.write(requests.get(url).text)
+          f.close()
+
+        BUF_SIZE = os.path.getsize(newFile)
+        sha256 = hashlib.sha256()
+        with open(newFile, 'rb') as f:
+          while True:
+            data = f.read(BUF_SIZE)
+            if not data:
+              break
+
+        sha256.update(data)
+
+        f.close()
+        os.remove(newFile)
+
+        return sha256.hexdigest()
+
+      def hashFileLOCAL(file):
+        BUF_SIZE = os.path.getsize(file)
+        sha256 = hashlib.sha256()
+        with open(file, 'rb') as f:
+          while True:
+            data = f.read(BUF_SIZE)
+            if not data:
+              break
+
+        sha256.update(data)
+
+        f.close()
+        return sha256.hexdigest()
+
+      def install(URL, Destination, NewName):
+        # Download and write to file
+        file_content = requests.get(URL)
+        open(Destination + '/' + NewName, "wb").write(file_content.content)
+        if debug:
+          print("Downloaded file to: " + Destination)
+
+
+print(upm_files.current_Dir)
+commands.commit('test', 'Random test')
