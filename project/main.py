@@ -20,14 +20,13 @@ class globals:
   scoopApp_File = str(f'{scoopApp_Dir}/upm.py')
   CC = lambda: os.system('cls' if os.name in ('nt', 'dos') else 'clear')
 
-
-class upm_files:
-  current_Dir = os.getcwd()
-  repository = str(current_Dir + '/upm')
-  tracked_Dir = str(repository + '/tracked_files')
-  commits = str(repository + '/commits')
-  changes_File = str(repository + '/changes.txt')
-  manifest = str(repository + '/manifest.txt')
+  class upm_files:
+    current_Dir = os.getcwd()
+    repository = str(current_Dir + '/upm')
+    tracked_Dir = str(repository + '/tracked_files')
+    commits = str(repository + '/commits')
+    changes_File = str(repository + '/changes.txt')
+    manifest = str(repository + '/manifest.txt')
 
 
 class commands:
@@ -35,40 +34,50 @@ class commands:
   def init():
     # Creates and sets up the folder system in current folder that archives changes
     try:
-      os.mkdir(upm_files.repository)
-      os.mkdir(upm_files.tracked_Dir)
-      os.mkdir(upm_files.commits)
-      open(upm_files.changes_File, 'w')
-      open(upm_files.manifest, 'w')
+      os.mkdir(globals.upm_files.repository)
+      os.mkdir(globals.upm_files.tracked_Dir)
+      os.mkdir(globals.upm_files.commits)
+      open(globals.upm_files.changes_File, 'w')
+      open(globals.upm_files.manifest, 'w')
       print('Repository successfully created!')
     except:
       print('ERROR: An error occured, repository not created.')
 
-  def commit(directory, message):
-    if os.path.exists(directory):
+  def commit(dir, message):
+    if os.path.exists(dir):
       formatted_msg = message.replace(' ', '-')
-      commit_Dir = f'{upm_files.commits}/{formatted_msg}'
+      commit_Dir = f'{globals.upm_files.commits}/{formatted_msg}'
       if not os.path.exists(commit_Dir):
         os.mkdir(commit_Dir)
+    else:
+      print('ERROR: Given directory can not be found.')
 
-      for r, d, f in os.walk(directory):
+    try:
+      for r, d, f in os.walk(dir):
         for folder in d:
-          new_Dir = str(f'{commit_Dir}/{directory}')
+          new_Dir = str(f'{commit_Dir}/{dir}')
           new_File = str(f'{new_Dir}/{folder}')
           if not os.path.exists(new_Dir):
             os.mkdir(new_Dir)
           if not os.path.exists(new_File):
             os.mkdir(new_File)
-          
         for file in f:
           filepath = os.path.join(r, file)
           print(f'{commit_Dir}/{filepath}')
           with open(f'{commit_Dir}/{filepath}', 'w') as _file:
             _file.write(open(filepath, 'r').read())
-          
-        
-        
+    except:
+      print('ERROR: Counld not access files, Maybe try as admin.')
 
+  def track(file):
+    if os.path.exists(file):
+      with open(file, 'r') as Fin:
+        file_content = Fin.read()
+        new_Dir = str(f'{globals.upm_files.tracked_Dir}/{file}')
+        with open(new_Dir, 'w') as Fout:
+          Fout.write(file_content)
+    else:
+      print('ERROR: File cannont be found.')
 
 class _upm:
 
@@ -82,13 +91,12 @@ class _upm:
 
     return files
 
-  
   class utility:
 
     def setup():
       if os.path.exists(globals.scoop_Dir):
         if debug:
-          print("Scoop is already installed. ")
+          print('Scoop is already installed. ')
         pass
       else:
         subprocess.call(globals.powershell + 'iwr -useb get.scoop.sh | iex')
@@ -110,17 +118,17 @@ class _upm:
         with open(globals.scoopShim_File, 'w') as file:
           file.write(f'@"{globals.python_Path + "/python.exe"}" "{globals.scoopApp_File}" %*')
       if debug:
-        print("Program file " + globals.scoopShim_File + " !MISSING!")
+        print('Program file ' + globals.scoopShim_File + ' !MISSING!')
 
       if not os.path.exists(globals.scoopApp_File):
         _upm.utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
         if debug:
-          print("Program file " + globals.scoopApp_File + " !MISSING!")
+          print('Program file ' + globals.scoopApp_File + ' !MISSING!')
 
       def hashFileURL(url):
         newFile = str(globals.scoopApp_Dir + '/newfile.txt')
 
-        with open(newFile, "w") as f:
+        with open(newFile, 'w') as f:
           f.write(requests.get(url).text)
           f.close()
 
@@ -156,10 +164,10 @@ class _upm:
       def install(URL, Destination, NewName):
         # Download and write to file
         file_content = requests.get(URL)
-        open(Destination + '/' + NewName, "wb").write(file_content.content)
+        open(Destination + '/' + NewName, 'wb').write(file_content.content)
         if debug:
-          print("Downloaded file to: " + Destination)
+          print('Downloaded file to: ' + Destination)
 
 
-print(upm_files.current_Dir)
-commands.commit('test', 'Random test')
+print(globals.upm_files.current_Dir)
+commands.track('test.txt')
