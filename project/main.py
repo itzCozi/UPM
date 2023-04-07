@@ -10,7 +10,7 @@ debug = True
 
 class globals:
   version = '0.1 - Pre-release'
-  user = 'Coope'#os.getlogin()
+  user = 'Coope'  #os.getlogin()
   powershell = str('C:/Windows/System32/powershell.exe')
   web_file = str(f'https://github.com/itzCozi/UPM/blob/main/project/{__file__}')
   python_Path = str(f'C:/Users/{user}/AppData/Local/Programs/Python/Python311')
@@ -44,7 +44,8 @@ class commands:
       os.mkdir(globals.upm_files.tracked_Dir)
       os.mkdir(globals.upm_files.commits)
       open(globals.upm_files.changes_File, 'w')
-      print('Repository successfully created!')
+      print(
+        f'{globals.upm_files.current_Dir} | Repository successfully created!')
     except:
       print('ERROR: An error occured, repository not created.')
       sys.exit(1)
@@ -65,19 +66,24 @@ class commands:
 
     for r, d, f in os.walk(dir):
       # Works but spits out the files in the commit_dir not there folders
-      for folder in d:
+      for folder in d or f:
+        tracked_folder = os.path.join(r, folder)
         new_Dir = str(f'{commit_Dir}/{dir}')
-        new_File = str(f'{new_Dir}/{folder}')
+        new_File = str(f'{commit_Dir}/{tracked_folder}')
         if not os.path.exists(new_Dir):
           os.mkdir(new_Dir)
         if not os.path.exists(new_File):
-          os.mkdir(new_File)
+          if os.path.isdir(tracked_folder):
+            os.mkdir(new_File)
+          else:
+            open(new_File, 'w')
       for file in f:
-        filepath = os.path.join(r, file)
-        file_name = os.path.basename(file).split("/")[-1]
-        with open(f'{commit_Dir}/{file_name}', 'w') as _file:
-          _file.write(open(filepath, 'r').read())
-    print(f'{commit_Dir} | New commit has been made.')
+        tracked_path = os.path.join(r, file)
+        if not os.path.exists(new_File):
+          open(new_File, 'w')
+        with open(f'{commit_Dir}/{tracked_path}', 'w') as _file:
+          _file.write(open(tracked_path, 'r').read())
+      print(f'{commit_Dir} | New commit has been made.')
 
   def track(file):
     # Starts tracking a file's changes
@@ -100,7 +106,7 @@ class commands:
       try:
         with open(file, 'r') as Fout:
           file_content = Fout.read()
-          with open(f'{globals.upm_files.tracked_Dir}/{file_name}', 'w') as Fin:
+          with open(f'{globals.upm_files.tracked_Dir}/{file_name}','w') as Fin:
             Fin.write(str(file_content))
           print(f'{file_name} | Saved file has been updated.')
       except:
