@@ -9,9 +9,10 @@ debug = True
 
 
 class globals:
-  user = 'Coope'  #os.getlogin()
+  version = '0.1 - Pre-release'
+  user = os.getlogin()
   powershell = str('C:/Windows/System32/powershell.exe')
-  web_file = str(f'https://github.com/itzCozi/Version-Control-Project/blob/main/project/{__file__}')
+  web_file = str(f'https://github.com/itzCozi/UPM/blob/main/project/{__file__}')
   python_Path = str(f'C:/Users/{user}/AppData/Local/Programs/Python/Python311')
   main_Dir = str(f'C:/Users/{user}/upm')
   scoop_Dir = str(f'C:/Users/{user}/scoop')
@@ -26,10 +27,16 @@ class globals:
     tracked_Dir = str(repository + '/tracked_files')
     commits = str(repository + '/commits')
     changes_File = str(repository + '/changes.txt')
+    # REMEBER TO USE MANIFEST!!!!
     manifest = str(repository + '/manifest.txt')
 
 
 class commands:
+
+  def about():
+    print('----- Universal Program Manager -----\n\n')
+    print(f'Version: {globals.version}')
+    print(f'Github: https://github.com/itzCozi/UPM')
 
   def init():
     # Creates and sets up the folder system in current folder that archives changes
@@ -42,6 +49,7 @@ class commands:
       print('Repository successfully created!')
     except:
       print('ERROR: An error occured, repository not created.')
+      sys.exit(1)
 
   def commit(dir, message):
     if os.path.exists(dir):
@@ -49,8 +57,12 @@ class commands:
       commit_Dir = f'{globals.upm_files.commits}/{formatted_msg}'
       if not os.path.exists(commit_Dir):
         os.mkdir(commit_Dir)
+      else:
+        print("ERROR: A commit with the same message is already made.")
+        sys.exit(1)
     else:
       print('ERROR: Given directory can not be found.')
+      sys.exit(1)
 
     try:
       for r, d, f in os.walk(dir):
@@ -68,40 +80,40 @@ class commands:
             _file.write(open(filepath, 'r').read())
     except:
       print('ERROR: Counld not access files, Maybe try as admin.')
+      sys.exit(1)
 
   def track(file):
     if os.path.exists(file):
       with open(file, 'r') as Fin:
         file_content = Fin.read()
-        formatted_file = file.replace('/', '-')
-        new_Dir = str(f'{globals.upm_files.tracked_Dir}/{formatted_file}')
+        file_name = os.path.basename(file).split("/")[-1]
+        new_Dir = str(f'{globals.upm_files.tracked_Dir}/{file_name}')
         with open(new_Dir, 'w') as Fout:
           Fout.write(file_content)
     else:
       print('ERROR: File cannont be found.')
+      sys.exit(1)
 
   def update(file):
-    # Doesnt work yet
-    for r, d, f in os.walk(globals.upm_files.tracked_Dir):
-      for _file in f:
-        formatted_file = file.replace('/', '-')
-        if formatted_file == _file:
-          _filepath = os.path.join(r, _file)
-          newFile_hash = _upm.utility.hashfile(file)
-          savedFile_hash = _upm.utility.hashfile(_filepath)
-          if savedFile_hash != newFile_hash:
-            with open(file, 'r') as Fout:
-              file_content = Fout.read()
-              with open(_file, 'w') as Fin:
-                Fin.write(file_content)
-          else:
-            print('Tracked files are already saved.')
-        else:
-          print('Cannot find tracked file.')
+    file_name = os.path.basename(file).split('/')[-1]
+    if os.path.exists(f'{globals.upm_files.tracked_Dir}/{file_name}'):
+      try:
+        with open(file, 'r') as Fout:
+          file_content = Fout.read()
+          with open(f'{globals.upm_files.tracked_Dir}/{file_name}',
+                    'w') as Fin:
+            Fin.write(str(file_content))
+      except:
+        print('ERROR: Counld not access files, Maybe try as admin.')
+        sys.exit(1)
+    else:
+      print('ERROR: Given file is not being tracked.')
+      sys.exit(1)
 
 
 class _upm:
 
+  @staticmethod
   def get_files(baseDir):
     files = []
     for r, d, f in os.walk(baseDir):
@@ -114,6 +126,7 @@ class _upm:
 
   class utility:
 
+    @staticmethod
     def setup():
       if os.path.exists(globals.scoop_Dir):
         if debug:
