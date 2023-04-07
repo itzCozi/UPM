@@ -27,13 +27,12 @@ class globals:
     tracked_Dir = str(repository + '/tracked_files')
     commits = str(repository + '/commits')
     changes_File = str(repository + '/changes.txt')
-    # REMEBER TO USE MANIFEST!!!!
-    manifest = str(repository + '/manifest.txt')
 
 
 class commands:
 
   def about():
+    # Simply prints the version and github
     print('----- Universal Program Manager -----\n\n')
     print(f'Version: {globals.version}')
     print(f'Github: https://github.com/itzCozi/UPM')
@@ -45,13 +44,13 @@ class commands:
       os.mkdir(globals.upm_files.tracked_Dir)
       os.mkdir(globals.upm_files.commits)
       open(globals.upm_files.changes_File, 'w')
-      open(globals.upm_files.manifest, 'w')
       print('Repository successfully created!')
     except:
       print('ERROR: An error occured, repository not created.')
       sys.exit(1)
 
   def commit(dir, message):
+    # Commit a draft as a folder
     if os.path.exists(dir):
       formatted_msg = message.replace(' ', '-')
       commit_Dir = f'{globals.upm_files.commits}/{formatted_msg}'
@@ -78,11 +77,13 @@ class commands:
           print(f'{commit_Dir}/{filepath}')
           with open(f'{commit_Dir}/{filepath}', 'w') as _file:
             _file.write(open(filepath, 'r').read())
+      print(f'{commit_Dir} | New commit has been made.')
     except:
       print('ERROR: Counld not access files, Maybe try as admin.')
       sys.exit(1)
 
   def track(file):
+    # Starts tracking a file's changes
     if os.path.exists(file):
       with open(file, 'r') as Fin:
         file_content = Fin.read()
@@ -90,19 +91,21 @@ class commands:
         new_Dir = str(f'{globals.upm_files.tracked_Dir}/{file_name}')
         with open(new_Dir, 'w') as Fout:
           Fout.write(file_content)
+      print(f'{file_name} | Successfully tracked.')
     else:
       print('ERROR: File cannont be found.')
       sys.exit(1)
 
   def update(file):
+    # Updates the saved file with the given file
     file_name = os.path.basename(file).split('/')[-1]
     if os.path.exists(f'{globals.upm_files.tracked_Dir}/{file_name}'):
       try:
         with open(file, 'r') as Fout:
           file_content = Fout.read()
-          with open(f'{globals.upm_files.tracked_Dir}/{file_name}',
-                    'w') as Fin:
+          with open(f'{globals.upm_files.tracked_Dir}/{file_name}', 'w') as Fin:
             Fin.write(str(file_content))
+          print(f'{file_name} | Saved file has been updated.')
       except:
         print('ERROR: Counld not access files, Maybe try as admin.')
         sys.exit(1)
@@ -114,6 +117,7 @@ class commands:
 class _upm:
 
   @staticmethod
+  # Returns all files in the baseDir
   def get_files(baseDir):
     files = []
     for r, d, f in os.walk(baseDir):
@@ -128,6 +132,7 @@ class _upm:
 
     @staticmethod
     def setup():
+      # Setup program files and dependencies
       if os.path.exists(globals.scoop_Dir):
         if debug:
           print('Scoop is already installed. ')
@@ -160,6 +165,7 @@ class _upm:
           print('Program file ' + globals.scoopApp_File + ' !MISSING!')
 
     def hashfile(file):
+      # Hash the contents of the file
       BUF_SIZE = os.path.getsize(file)
       sha256 = hashlib.sha256()
       with open(file, 'rb') as f:
