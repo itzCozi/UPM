@@ -10,7 +10,7 @@ debug = True
 
 class globals:
   version = '0.1 - Pre-release'
-  user = os.getlogin()
+  user = 'Coope'#os.getlogin()
   powershell = str('C:/Windows/System32/powershell.exe')
   web_file = str(f'https://github.com/itzCozi/UPM/blob/main/project/{__file__}')
   python_Path = str(f'C:/Users/{user}/AppData/Local/Programs/Python/Python311')
@@ -33,7 +33,7 @@ class commands:
 
   def about():
     # Simply prints the version and github
-    print('----- Universal Program Manager -----\n\n')
+    print('----- Universal Program Manager -----\n')
     print(f'Version: {globals.version}')
     print(f'Github: https://github.com/itzCozi/UPM')
 
@@ -63,24 +63,21 @@ class commands:
       print('ERROR: Given directory can not be found.')
       sys.exit(1)
 
-    try:
-      for r, d, f in os.walk(dir):
-        for folder in d:
-          new_Dir = str(f'{commit_Dir}/{dir}')
-          new_File = str(f'{new_Dir}/{folder}')
-          if not os.path.exists(new_Dir):
-            os.mkdir(new_Dir)
-          if not os.path.exists(new_File):
-            os.mkdir(new_File)
-        for file in f:
-          filepath = os.path.join(r, file)
-          print(f'{commit_Dir}/{filepath}')
-          with open(f'{commit_Dir}/{filepath}', 'w') as _file:
-            _file.write(open(filepath, 'r').read())
-      print(f'{commit_Dir} | New commit has been made.')
-    except:
-      print('ERROR: Counld not access files, Maybe try as admin.')
-      sys.exit(1)
+    for r, d, f in os.walk(dir):
+      # Works but spits out the files in the commit_dir not there folders
+      for folder in d:
+        new_Dir = str(f'{commit_Dir}/{dir}')
+        new_File = str(f'{new_Dir}/{folder}')
+        if not os.path.exists(new_Dir):
+          os.mkdir(new_Dir)
+        if not os.path.exists(new_File):
+          os.mkdir(new_File)
+      for file in f:
+        filepath = os.path.join(r, file)
+        file_name = os.path.basename(file).split("/")[-1]
+        with open(f'{commit_Dir}/{file_name}', 'w') as _file:
+          _file.write(open(filepath, 'r').read())
+    print(f'{commit_Dir} | New commit has been made.')
 
   def track(file):
     # Starts tracking a file's changes
@@ -185,3 +182,35 @@ class _upm:
       open(Destination + '/' + NewName, 'wb').write(file_content.content)
       if debug:
         print('Downloaded file to: ' + Destination)
+
+
+class driver:
+
+  def arg_handler():
+    if sys.argv[1] == 'about':
+      commands.about()
+      pass
+    if sys.argv[1] == 'init':
+      commands.init()
+      pass
+    if sys.argv[1] == 'commit':
+      try:
+        commands.commit(str(sys.argv[2]), str(sys.argv[3]))
+        pass
+      except IndexError:
+        print("Please provide proper parameters : commit 'C:/project/source' Bug Fix #69")
+    if sys.argv[1] == 'track':
+      try:
+        commands.track(sys.argv[2])
+        pass
+      except:
+        print("Please provide proper parameters : track 'C:/project/users.txt'")
+    if sys.argv[1] == 'update':
+      try:
+        commands.update(sys.argv[2])
+        pass
+      except:
+        print("Please provide proper parameters : update 'C:/test.txt'")
+
+
+driver.arg_handler()
