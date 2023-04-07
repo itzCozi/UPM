@@ -36,6 +36,7 @@ class commands:
     print('----- Universal Program Manager -----\n')
     print(f'Version: {globals.version}')
     print(f'Github: https://github.com/itzCozi/UPM')
+    sys.exit(0)
 
   def init():
     # Creates and sets up the folder system in current folder that archives changes
@@ -44,8 +45,8 @@ class commands:
       os.mkdir(globals.upm_files.tracked_Dir)
       os.mkdir(globals.upm_files.commits)
       open(globals.upm_files.changes_File, 'w')
-      print(
-        f'{globals.upm_files.current_Dir} | Repository successfully created!')
+      print(f'{globals.upm_files.current_Dir} | Repository successfully created!')
+      sys.exit(0)
     except:
       print('ERROR: An error occured, repository not created.')
       sys.exit(1)
@@ -84,6 +85,7 @@ class commands:
         with open(f'{commit_Dir}/{tracked_path}', 'w') as _file:
           _file.write(open(tracked_path, 'r').read())
       print(f'{commit_Dir} | New commit has been made.')
+      sys.exit(0)
 
   def track(file):
     # Starts tracking a file's changes
@@ -95,8 +97,25 @@ class commands:
         with open(new_Dir, 'w') as Fout:
           Fout.write(file_content)
       print(f'{file_name} | Successfully tracked.')
+      sys.exit(0)
     else:
       print('ERROR: File cannont be found.')
+      sys.exit(1)
+
+  def untrack(file):
+    # Just untracks the file
+    file_name = os.path.basename(file).split('/')[-1]
+    tracked_file = f'{globals.upm_files.tracked_Dir}/{file_name}'
+    if os.path.exists(tracked_file):
+      try:
+        os.remove(tracked_file)
+        print(f'{file_name} | Has been untracked.')
+        sys.exit(0)
+      except:
+        print('ERROR: Could not access tracked file.')
+        sys.exit(1)
+    else:
+      print('Given file does not exists.')
       sys.exit(1)
 
   def update(file):
@@ -109,6 +128,7 @@ class commands:
           with open(f'{globals.upm_files.tracked_Dir}/{file_name}','w') as Fin:
             Fin.write(str(file_content))
           print(f'{file_name} | Saved file has been updated.')
+          sys.exit(0)
       except:
         print('ERROR: Counld not access files, Maybe try as admin.')
         sys.exit(1)
