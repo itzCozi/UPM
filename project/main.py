@@ -1,5 +1,4 @@
 # Version control system like git using scoop to implement as a terminal app
-# Using CMD args: https://www.geeksforgeeks.org/command-line-arguments-in-python/#
 import hashlib
 import os, sys
 import requests
@@ -10,7 +9,7 @@ debug = True
 
 class globals:
   version = '0.1 - Pre-release'
-  user = 'Coope'  #os.getlogin()
+  user = os.getlogin()
   powershell = str('C:/Windows/System32/powershell.exe')
   web_file = str(f'https://github.com/itzCozi/UPM/blob/main/project/{__file__}')
   python_Path = str(f'C:/Users/{user}/AppData/Local/Programs/Python/Python311')
@@ -36,7 +35,7 @@ class commands:
     print('----- Universal Program Manager -----\n')
     print(f'Version: {globals.version}')
     print(f'Github: https://github.com/itzCozi/UPM')
-    sys.exit(0)
+    return True
 
   def init():
     # Creates and sets up the folder system in current folder that archives changes
@@ -46,7 +45,7 @@ class commands:
       os.mkdir(globals.upm_files.commits)
       open(globals.upm_files.changes_File, 'w')
       print(f'{globals.upm_files.current_Dir} | Repository successfully created!')
-      sys.exit(0)
+      return True
     except:
       print('ERROR: An error occured, repository not created.')
       sys.exit(1)
@@ -85,7 +84,7 @@ class commands:
         with open(f'{commit_Dir}/{tracked_path}', 'w') as _file:
           _file.write(open(tracked_path, 'r').read())
       print(f'{commit_Dir} | New commit has been made.')
-      sys.exit(0)
+      return True
 
   def track(file):
     # Starts tracking a file's changes
@@ -97,7 +96,7 @@ class commands:
         with open(new_Dir, 'w') as Fout:
           Fout.write(file_content)
       print(f'{file_name} | Successfully tracked.')
-      sys.exit(0)
+      return True
     else:
       print('ERROR: File cannont be found.')
       sys.exit(1)
@@ -110,7 +109,7 @@ class commands:
       try:
         os.remove(tracked_file)
         print(f'{file_name} | Has been untracked.')
-        sys.exit(0)
+        return True
       except:
         print('ERROR: Could not access tracked file.')
         sys.exit(1)
@@ -128,7 +127,7 @@ class commands:
           with open(f'{globals.upm_files.tracked_Dir}/{file_name}','w') as Fin:
             Fin.write(str(file_content))
           print(f'{file_name} | Saved file has been updated.')
-          sys.exit(0)
+          return True
       except:
         print('ERROR: Counld not access files, Maybe try as admin.')
         sys.exit(1)
@@ -215,26 +214,26 @@ class driver:
   def arg_handler():
     if sys.argv[1] == 'about':
       commands.about()
-      pass
     if sys.argv[1] == 'init':
       commands.init()
-      pass
     if sys.argv[1] == 'commit':
       try:
         commands.commit(str(sys.argv[2]), str(sys.argv[3]))
-        pass
       except IndexError:
         print("Please provide proper parameters : commit 'C:/project/source' Bug Fix #69")
     if sys.argv[1] == 'track':
       try:
         commands.track(sys.argv[2])
-        pass
       except:
         print("Please provide proper parameters : track 'C:/project/users.txt'")
+    if sys.argv[1] == 'untrack':
+      try:
+        commands.untrack(sys.argv[2])
+      except:
+        print("Please provide proper parameters : untrack 'test/lol.py'")
     if sys.argv[1] == 'update':
       try:
         commands.update(sys.argv[2])
-        pass
       except:
         print("Please provide proper parameters : update 'C:/test.txt'")
 
