@@ -11,7 +11,7 @@ class globals:
   version = '0.1 - Pre-release'
   user = os.getlogin()
   powershell = str('C:/Windows/System32/powershell.exe')
-  web_file = str(f'https://github.com/itzCozi/UPM/blob/main/project/{__file__}')
+  web_file = str(f'https://github.com/itzCozi/UPM/blob/main/UPM-source/win-version/{__file__}')
   python_Path = str(f'C:/Users/{user}/AppData/Local/Programs/Python/Python311')
   main_Dir = str(f'C:/Users/{user}/upm')
   scoop_Dir = str(f'C:/Users/{user}/scoop')
@@ -182,7 +182,10 @@ class _upm:
         print('Program file ' + globals.scoopShim_File + ' !MISSING!')
 
       if not os.path.exists(globals.scoopApp_File):
-        _upm.utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
+        try:
+          _upm.utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
+        except:
+          print('ERROR: Cant install file from web, Did you change the name of the file?')
         if debug:
           print('Program file ' + globals.scoopApp_File + ' !MISSING!')
 
