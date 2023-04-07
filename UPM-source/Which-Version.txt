@@ -1,0 +1,2 @@
+win-version : is for windows 10 or up.
+uni-version : universal version which only needs python.
