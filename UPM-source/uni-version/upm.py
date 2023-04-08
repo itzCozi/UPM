@@ -17,14 +17,14 @@ class globals:
 
 class commands:
 
-  def about():
+  def about(self):
     # Simply prints the version and github
     print('----- Universal Program Manager -----\n')
     print(f'Version: {globals.version}')
     print('Github: https://github.com/itzCozi/UPM')
     return True
 
-  def init():
+  def init(self):
     # Creates and sets up the folder system in current folder that archives changes
     try:
       os.mkdir(globals.upm_files.repository)
@@ -169,7 +169,7 @@ class commands:
 
 class driver:
 
-  def argHandler():
+  def argHandler(self):
     if sys.argv[1] == 'about':
       commands.about()
     if sys.argv[1] == 'init':
