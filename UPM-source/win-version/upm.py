@@ -3,6 +3,7 @@ import hashlib
 import os, sys
 import requests
 import subprocess
+from datetime import datetime
 
 debug = True
 
@@ -19,6 +20,7 @@ class globals:
   scoopShim_File = str(f'{scoop_Dir}/shims/upm.cmd')
   scoopApp_File = str(f'{scoopApp_Dir}/upm.py')
   CC = lambda: os.system('cls' if os.name in ('nt', 'dos') else 'clear')
+  now = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "\n\n"
 
   class upm_files:
     current_Dir = os.getcwd()
@@ -46,6 +48,8 @@ class commands:
       os.mkdir(globals.upm_files.commits)
       os.mkdir(globals.upm_files.builds)
       open(globals.upm_files.changes_File, 'w')
+      with open(f'{globals.upm_files.changes_File}', 'a') as log:
+        log.write(f'{globals.upm_files.current_Dir} | New repository created AT - {globals.now}')
       print(f'{globals.upm_files.current_Dir} | Repository successfully created!')
       return True
     except:
@@ -97,6 +101,8 @@ class commands:
         new_Dir = str(f'{globals.upm_files.tracked_Dir}/{file_name}')
         with open(new_Dir, 'w') as Fout:
           Fout.write(file_content)
+      with open(f'{globals.upm_files.changes_File}', 'a') as log:
+        log.write(f'{file_name} | New file has tracked AT - {globals.now}')
       print(f'{file_name} | Successfully tracked.')
       return True
     else:
@@ -110,6 +116,8 @@ class commands:
     if os.path.exists(tracked_file):
       try:
         os.remove(tracked_file)
+        with open(f'{globals.upm_files.changes_File}', 'a') as log:
+          log.write(f'{file_name} | File has been untracked AT - {globals.now}')
         print(f'{file_name} | Has been untracked.')
         return True
       except:
@@ -163,6 +171,8 @@ class commands:
           file_content = Fout.read()
           with open(f'{globals.upm_files.tracked_Dir}/{file_name}','w') as Fin:
             Fin.write(str(file_content))
+          with open(f'{globals.upm_files.changes_File}', 'a') as log:
+            log.write(f'{file_name} | Tracked file has been updated AT - {globals.now}')
           print(f'{file_name} | Saved file has been updated.')
           return True
       except:
@@ -282,6 +292,5 @@ class driver:
       except:
         print("Please provide proper parameters : build 'C:/UPM.txt' TESTBUILD 1.0.0")
       
-
 
 driver.arg_handler()
