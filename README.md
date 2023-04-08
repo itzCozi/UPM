@@ -1,2 +1,2 @@
-# Version-Control-Project
-A work in progress version control project.
+# UPM
+Universal Program Manager is currently in development.
