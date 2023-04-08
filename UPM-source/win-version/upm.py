@@ -2,6 +2,7 @@
 import hashlib
 import os, sys
 import requests
+import shutil
 import subprocess
 from datetime import datetime
 
@@ -180,7 +181,32 @@ class commands:
     else:
       print('ERROR: Given file is not being tracked.')
       sys.exit(1)
-
+      
+  def clear_changes():
+    changes_file = globals.upm_files.changes_File
+    try:
+      if os.path.exists(changes_file):
+        with open(f'{changes_file}', 'a') as file:
+          file.truncate(0)
+          file.write('Changes file cleared! \n\n')
+          file.close()
+    except Exception as e:
+      print(f'ERROR: Could not access changes file. \n{e}\n')
+      sys.exit(1)
+        
+  def uninit():
+    # Deletes the repository 
+    try:
+      for d in os.walk(globals.upm_files.current_Dir):
+        for folder in d:
+          if str(folder) == 'upm':
+            shutil.rmtree(folder)
+          else:
+            pass
+    except Exception as e:
+      print(f'ERROR: Could not access needed files. \n{e}\n')
+      sys.exit(1)
+      
 
 class _upm:
 
@@ -232,6 +258,7 @@ class _upm:
           _upm.utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
         except Exception as e:
           print(f'ERROR: Cant install file from web, Did you change the name of the file? \n{e}\n')
+          sys.exit(1)
         if debug:
           print(f'Program file {globals.scoopApp_File} !MISSING!')
 
@@ -290,6 +317,11 @@ class driver:
         commands.build(sys.argv[2], sys.argv[3], sys.argv[4])
       except Exception as e:
         print(f"Please provide proper parameters : build 'C:/UPM.txt' TESTBUILD 1.0.0 \n{e}\n")
+    if sys.argv[1] == 'reset':
+      try:
+        commands.reset()
+      except Exception as e:
+        pass
       
 
 try:
