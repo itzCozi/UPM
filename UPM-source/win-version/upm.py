@@ -37,7 +37,7 @@ class commands:
     # Simply prints the version and github
     print('----- Universal Program Manager -----\n')
     print(f'Version: {globals.version}')
-    print(f'Github: https://github.com/itzCozi/UPM')
+    print('Github: https://github.com/itzCozi/UPM')
     return True
 
   def init():
