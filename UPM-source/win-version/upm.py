@@ -25,6 +25,7 @@ class globals:
     repository = str(current_Dir + '/upm')
     tracked_Dir = str(repository + '/tracked_files')
     commits = str(repository + '/commits')
+    builds = str(repository + '/builds')
     changes_File = str(repository + '/changes.txt')
 
 
@@ -43,6 +44,7 @@ class commands:
       os.mkdir(globals.upm_files.repository)
       os.mkdir(globals.upm_files.tracked_Dir)
       os.mkdir(globals.upm_files.commits)
+      os.mkdir(globals.upm_files.builds)
       open(globals.upm_files.changes_File, 'w')
       print(f'{globals.upm_files.current_Dir} | Repository successfully created!')
       return True
@@ -116,6 +118,41 @@ class commands:
     else:
       print('Given file does not exists.')
       sys.exit(1)
+
+  def build(dir, name, version):
+    # Creates a compiled version of the project
+    if os.path.exists(dir):
+      formatted_name = name.replace(' ', '-')
+      build_Dir = f'{globals.upm_files.builds}/{formatted_name}-{version}'
+      if not os.path.exists(build_Dir):
+        os.mkdir(build_Dir)
+      else:
+        print("ERROR: A build with the same message is already made.")
+        sys.exit(1)
+    else:
+      print('ERROR: Given directory can not be found.')
+      sys.exit(1)
+
+    for r, d, f in os.walk(dir):
+      for folder in d or f:
+        tracked_folder = os.path.join(r, folder)
+        new_Dir = str(f'{build_Dir}/{dir}')
+        new_File = str(f'{build_Dir}/{tracked_folder}')
+        if not os.path.exists(new_Dir):
+          os.mkdir(new_Dir)
+        if not os.path.exists(new_File):
+          if os.path.isdir(tracked_folder):
+            os.mkdir(new_File)
+          else:
+            open(new_File, 'w')
+      for file in f:
+        tracked_path = os.path.join(r, file)
+        if not os.path.exists(new_File):
+          open(new_File, 'w')
+        with open(f'{build_Dir}/{tracked_path}', 'w') as _file:
+          _file.write(open(tracked_path, 'r').read())
+      print(f'{build_Dir} | New build has been created.')
+      return True
 
   def update(file):
     # Updates the saved file with the given file
@@ -239,6 +276,12 @@ class driver:
         commands.update(sys.argv[2])
       except:
         print("Please provide proper parameters : update 'C:/test.txt'")
+    if sys.argv[1] == 'build':
+      try:
+        commands.build(sys.argv[2], sys.argv[3], sys.argv[4])
+      except:
+        print("Please provide proper parameters : build 'C:/UPM.txt' TESTBUILD 1.0.0")
+      
 
 
 driver.arg_handler()
