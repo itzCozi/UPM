@@ -165,6 +165,18 @@ class commands:
     else:
       print('ERROR: Given file is not being tracked.')
       sys.exit(1)
+      
+  def clear_changes():
+    changes_file = globals.upm_files.changes_File
+    try:
+      if os.path.exists(changes_file):
+        with open(f'{changes_file}', 'a') as file:
+          file.truncate(0)
+          file.write('Changes file cleared! \n\n')
+          file.close()
+    except Exception as e:
+      print(f'ERROR: Could not access changes file. \n{e}\n')
+      sys.exit(1)
 
 
 class driver:
