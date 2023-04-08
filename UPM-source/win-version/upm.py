@@ -24,11 +24,11 @@ class globals:
 
   class upm_files:
     current_Dir = os.getcwd()
-    repository = str(current_Dir + '/upm')
-    tracked_Dir = str(repository + '/tracked_files')
-    commits = str(repository + '/commits')
-    builds = str(repository + '/builds')
-    changes_File = str(repository + '/changes.txt')
+    repository = str(f'{current_Dir}/upm')
+    tracked_Dir = str(f'{repository}/tracked_files')
+    commits = str(f'{repository}/commits')
+    builds = str(f'{repository}/builds')
+    changes_File = str(f'{repository}/changes.txt')
 
 
 class commands:
@@ -52,8 +52,8 @@ class commands:
         log.write(f'{globals.upm_files.current_Dir} | New repository created AT - {globals.now}')
       print(f'{globals.upm_files.current_Dir} | Repository successfully created!')
       return True
-    except:
-      print('ERROR: An error occured, repository not created.')
+    except Exception as e:
+      print(f'ERROR: An error occured, repository not created. \n{e}\n')
       sys.exit(1)
 
   def commit(dir, message):
@@ -120,8 +120,8 @@ class commands:
           log.write(f'{file_name} | File has been untracked AT - {globals.now}')
         print(f'{file_name} | Has been untracked.')
         return True
-      except:
-        print('ERROR: Could not access tracked file.')
+      except Exception as e:
+        print(f'ERROR: Could not access tracked file. \n{e}\n')
         sys.exit(1)
     else:
       print('Given file does not exists.')
@@ -175,8 +175,8 @@ class commands:
             log.write(f'{file_name} | Tracked file has been updated AT - {globals.now}')
           print(f'{file_name} | Saved file has been updated.')
           return True
-      except:
-        print('ERROR: Counld not access files, Maybe try as admin.')
+      except Exception as e:
+        print(f'ERROR: Counld not access files, Maybe try as admin. \n{e}\n')
         sys.exit(1)
     else:
       print('ERROR: Given file is not being tracked.')
@@ -187,13 +187,13 @@ class _upm:
 
   @staticmethod
   # Returns all files in the baseDir
-  def get_files(baseDir):
+  def getFiles(baseDir):
     files = []
     for r, d, f in os.walk(baseDir):
       for file in f:
-        filepath = os.path.join(r, file)
-      if os.path.exists(filepath):
-        files.append(filepath)
+        file_path = os.path.join(r, file)
+      if os.path.exists(file_path):
+        files.append(file_path)
 
     return files
 
@@ -207,7 +207,7 @@ class _upm:
           print('Scoop is already installed. ')
         pass
       else:
-        subprocess.call(globals.powershell + 'iwr -useb get.scoop.sh | iex')
+        subprocess.call(f'{globals.powershell} iwr -useb get.scoop.sh | iex')
 
       if not os.path.exists(globals.main_Dir):
         os.mkdir(globals.main_Dir)
@@ -226,17 +226,17 @@ class _upm:
         with open(globals.scoopShim_File, 'w') as file:
           file.write(f'@"{globals.python_Path + "/python.exe"}" "{globals.scoopApp_File}" %*')
       if debug:
-        print('Program file ' + globals.scoopShim_File + ' !MISSING!')
+        print(f'Program file {globals.scoopShim_File} !MISSING!')
 
       if not os.path.exists(globals.scoopApp_File):
         try:
           _upm.utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
-        except:
-          print('ERROR: Cant install file from web, Did you change the name of the file?')
+        except Exception as e:
+          print(f'ERROR: Cant install file from web, Did you change the name of the file? \n{e}\n')
         if debug:
-          print('Program file ' + globals.scoopApp_File + ' !MISSING!')
+          print(f'Program file {globals.scoopApp_File} !MISSING!')
 
-    def hashfile(file):
+    def hashFile(file):
       # Hash the contents of the file
       BUF_SIZE = os.path.getsize(file)
       sha256 = hashlib.sha256()
@@ -251,17 +251,17 @@ class _upm:
         sha256.update(data)
         return sha256.hexdigest()
 
-    def install(URL, Destination, NewName):
+    def install(URL, destination, NewName):
       # Download and write to file
       file_content = requests.get(URL)
-      open(Destination + '/' + NewName, 'wb').write(file_content.content)
+      open(f'{destination}/{NewName}', 'wb').write(file_content.content)
       if debug:
-        print('Downloaded file to: ' + Destination)
+        print(f'Downloaded file to: {destination}')
 
 
 class driver:
 
-  def arg_handler():
+  def argHandler():
     if sys.argv[1] == 'about':
       commands.about()
     if sys.argv[1] == 'init':
@@ -274,23 +274,27 @@ class driver:
     if sys.argv[1] == 'track':
       try:
         commands.track(sys.argv[2])
-      except:
-        print("Please provide proper parameters : track 'C:/project/users.txt'")
+      except Exception as e:
+        print(f"Please provide proper parameters : track 'C:/project/users.txt' \n{e}\n")
     if sys.argv[1] == 'untrack':
       try:
         commands.untrack(sys.argv[2])
-      except:
-        print("Please provide proper parameters : untrack 'test/lol.py'")
+      except Exception as e:
+        print(f"Please provide proper parameters : untrack 'test/lol.py' \n{e}\n")
     if sys.argv[1] == 'update':
       try:
         commands.update(sys.argv[2])
-      except:
-        print("Please provide proper parameters : update 'C:/test.txt'")
+      except Exception as e:
+        print(f"Please provide proper parameters : update 'C:/test.txt' \n{e}\n")
     if sys.argv[1] == 'build':
       try:
         commands.build(sys.argv[2], sys.argv[3], sys.argv[4])
-      except:
-        print("Please provide proper parameters : build 'C:/UPM.txt' TESTBUILD 1.0.0")
+      except Exception as e:
+        print(f"Please provide proper parameters : build 'C:/UPM.txt' TESTBUILD 1.0.0 \n{e}\n")
       
 
-driver.arg_handler()
+try:
+  driver.argHandler()
+except Exception as e:
+  print(f'CRIT-ERROR: A unkown runtime-error occurred \n{e}\n')
+  sys.exit(1)
