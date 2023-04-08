@@ -19,7 +19,6 @@ class globals:
   scoopApp_Dir = str(f'{scoop_Dir}/apps/upm')
   scoopShim_File = str(f'{scoop_Dir}/shims/upm.cmd')
   scoopApp_File = str(f'{scoopApp_Dir}/upm.py')
-  CC = lambda: os.system('cls' if os.name in ('nt', 'dos') else 'clear')
   now = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "\n\n"
 
   class upm_files:
