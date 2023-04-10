@@ -4,7 +4,7 @@ from datetime import datetime
 
 class globals:
   version = '0.1 - Pre-release'
-  now = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "\n\n"
+  now = datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '\n\n'
 
   class upm_files:
     current_Dir = os.getcwd()
@@ -48,7 +48,7 @@ class commands:
       if not os.path.exists(commit_Dir):
         os.mkdir(commit_Dir)
       else:
-        print("ERROR: A commit with the same message is already made.")
+        print('ERROR: A commit with the same message is already made.')
         sys.exit(1)
     else:
       print('ERROR: Given directory can not be found.')
@@ -81,7 +81,7 @@ class commands:
     if os.path.exists(file):
       with open(file, 'r') as Fin:
         file_content = Fin.read()
-        file_name = os.path.basename(file).split("/")[-1]
+        file_name = os.path.basename(file).split('/')[-1]
         new_Dir = str(f'{globals.upm_files.tracked_Dir}/{file_name}')
         with open(new_Dir, 'w') as Fout:
           Fout.write(file_content)
@@ -119,7 +119,7 @@ class commands:
       if not os.path.exists(build_Dir):
         os.mkdir(build_Dir)
       else:
-        print("ERROR: A build with the same message is already made.")
+        print('ERROR: A build with the same message is already made.')
         sys.exit(1)
     else:
       print('ERROR: Given directory can not be found.')
@@ -182,36 +182,45 @@ class commands:
 class driver:
 
   def argHandler():
-    if sys.argv[1] == 'about':
-      commands.about()
     if sys.argv[1] == 'init':
       commands.init()
-    if sys.argv[1] == 'commit':
+    elif sys.argv[1] == 'about':
+      commands.about()
+    elif sys.argv[1] == 'commit':
       try:
         commands.commit(str(sys.argv[2]), str(sys.argv[3]))
       except IndexError:
         print("Please provide proper parameters : commit 'C:/project/source' Bug Fix #69")
-    if sys.argv[1] == 'track':
+    elif sys.argv[1] == 'track':
       try:
         commands.track(sys.argv[2])
       except Exception as e:
         print(f"Please provide proper parameters : track 'C:/project/users.txt' \n{e}\n")
-    if sys.argv[1] == 'untrack':
+    elif sys.argv[1] == 'untrack':
       try:
         commands.untrack(sys.argv[2])
       except Exception as e:
         print(f"Please provide proper parameters : untrack 'test/lol.py' \n{e}\n")
-    if sys.argv[1] == 'update':
+    elif sys.argv[1] == 'update':
       try:
         commands.update(sys.argv[2])
       except Exception as e:
         print(f"Please provide proper parameters : update 'C:/test.txt' \n{e}\n")
-    if sys.argv[1] == 'build':
+    elif sys.argv[1] == 'build':
       try:
         commands.build(sys.argv[2], sys.argv[3], sys.argv[4])
       except Exception as e:
         print(f"Please provide proper parameters : build 'C:/UPM.txt' TESTBUILD 1.0.0 \n{e}\n")
+    elif sys.argv[1] == 'clear_changes':
+      try:
+        commands.clear_changes()
+      except Exception as e:
+        print(f"A unkown runtime error occurred. \n{e}\n")
       
+    else:
+      print("To use UPM you must pass an argument via the command-line such as: \
+        \npython upm.py track 'happy-420/snoop.cpp'")
+
 
 try:
   driver.argHandler()
