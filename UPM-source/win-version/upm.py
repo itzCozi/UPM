@@ -70,7 +70,6 @@ class commands:
       sys.exit(1)
 
     for r, d, f in os.walk(dir):
-      # Works but spits out the files in the commit_dir not there folders
       for folder in d or f:
         tracked_folder = os.path.join(r, folder)
         new_Dir = str(f'{commit_Dir}/{dir}')
@@ -182,6 +181,7 @@ class commands:
       sys.exit(1)
       
   def clear_changes():
+    # Clear the changes file
     changes_file = globals.upm_files.changes_File
     try:
       if os.path.exists(changes_file):
