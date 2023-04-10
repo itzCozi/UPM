@@ -14,7 +14,6 @@ class globals:
   user = os.getlogin()
   powershell = str('C:/Windows/System32/powershell.exe')
   web_file = str(f'https://github.com/itzCozi/UPM/blob/main/UPM-source/win-version/{__file__}')
-  python_Path = str(f'C:/Users/{user}/AppData/Local/Programs/Python/Python311')
   main_Dir = str(f'C:/Users/{user}/upm')
   scoop_Dir = str(f'C:/Users/{user}/scoop')
   scoopApp_Dir = str(f'{scoop_Dir}/apps/upm')
@@ -243,13 +242,9 @@ class _upm:
       else:
         pass
 
-      if not os.path.exists(globals.python_Path):
-        python_install = 'https://www.python.org/downloads/release/python-3110/'
-        print(f'Python3.11 not installed please download it here: {python_install}')
-
       if not os.path.exists(globals.scoopShim_File):
         with open(globals.scoopShim_File, 'w') as file:
-          file.write(f'@"{globals.python_Path + "/python.exe"}" "{globals.scoopApp_File}" %*')
+          file.write(f'@"{globals.scoopApp_File}" %*')
       if debug:
         print(f'Program file {globals.scoopShim_File} !MISSING!')
 
