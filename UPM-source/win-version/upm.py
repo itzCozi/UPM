@@ -14,7 +14,6 @@ class globals:
   user = os.getlogin()
   powershell = str('C:/Windows/System32/powershell.exe')
   web_file = str(f'https://github.com/itzCozi/UPM/blob/main/UPM-source/win-version/{__file__}')
-  main_Dir = str(f'C:/Users/{user}/upm')
   scoop_Dir = str(f'C:/Users/{user}/scoop')
   scoopApp_Dir = str(f'{scoop_Dir}/apps/upm')
   scoopShim_File = str(f'{scoop_Dir}/shims/upm.cmd')
@@ -233,29 +232,26 @@ class _upm:
       else:
         subprocess.call(f'{globals.powershell} iwr -useb get.scoop.sh | iex')
 
-      if not os.path.exists(globals.main_Dir):
-        os.mkdir(globals.main_Dir)
-      else:
-        pass
-      if not os.path.exists(globals.scoopApp_Dir):
-        os.mkdir(globals.scoopApp_Dir)
-      else:
-        pass
+      if os.path.exists(globals.scoop_Dir):
+        if not os.path.exists(globals.scoopApp_Dir):
+          os.mkdir(globals.scoopApp_Dir)
 
-      if not os.path.exists(globals.scoopShim_File):
-        with open(globals.scoopShim_File, 'w') as file:
-          file.write(f'@"{globals.scoopApp_File}" %*')
-      if debug:
-        print(f'Program file {globals.scoopShim_File} !MISSING!')
-
-      if not os.path.exists(globals.scoopApp_File):
-        try:
-          _upm.utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
-        except Exception as e:
-          print(f'ERROR: Cant install file from web, Did you change the name of the file? \n{e}\n')
-          sys.exit(1)
+        if not os.path.exists(globals.scoopShim_File):
+          with open(globals.scoopShim_File, 'w') as file:
+            file.write(f'@"{globals.scoopApp_File}" %*')
         if debug:
-          print(f'Program file {globals.scoopApp_File} !MISSING!')
+          print(f'Program file {globals.scoopShim_File} !MISSING!')
+
+        if not os.path.exists(globals.scoopApp_File):
+          try:
+            _upm.utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
+          except Exception as e:
+            print(f'ERROR: Cant install file from web, Did you change the name of the file? \n{e}\n')
+            sys.exit(1)
+          if debug:
+            print(f'Program file {globals.scoopApp_File} !MISSING!')
+      else:
+        pass
 
     def hashFile(file):
       # Hash the contents of the file
