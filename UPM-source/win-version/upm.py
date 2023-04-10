@@ -254,21 +254,6 @@ class _upm:
       else:
         pass
 
-    def hashFile(file):
-      # Hash the contents of the file
-      BUF_SIZE = os.path.getsize(file)
-      sha256 = hashlib.sha256()
-      with open(file, 'rb') as f:
-        while True:
-          data = f.read(BUF_SIZE)
-          if not data:
-            break
-
-        f.close()
-
-        sha256.update(data)
-        return sha256.hexdigest()
-
     def install(URL, destination, NewName):
       # Download and write to file
       file_content = requests.get(URL)
