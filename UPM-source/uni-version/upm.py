@@ -225,5 +225,5 @@ class driver:
 try:
   driver.argHandler()
 except Exception as e:
-  print(f'CRIT-ERROR: A unkown runtime-error occurred \n{e}\n')
+  print(f'CRIT-ERROR: A unkown runtime-error occurred. \n{e}\n')
   sys.exit(1)
