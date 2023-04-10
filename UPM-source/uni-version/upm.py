@@ -21,6 +21,7 @@ class commands:
     # Simply prints the version and github
     print('----- Universal Program Manager -----\n')
     print(f'Version: {globals.version}')
+    print(f'Current repository: {globals.upm_files.repository}')
     print('Github: https://github.com/itzCozi/UPM')
     return True
 
@@ -181,6 +182,30 @@ class commands:
 
 class driver:
 
+  def mercyHelper():
+    if os.path.exists(globals.upm_files.repository):
+      new_file = f'{globals.upm_files.repository}/HELP.txt'
+    else:
+      new_file = f'{globals.upm_files.current_Dir}/HELP.txt'
+    if not os.path.exists(new_file):
+      open(new_file, 'x')
+    with open(new_file, 'w') as file:
+      file.write('Github:https://github.com/itzCozi/UPM\n')
+      file.write('Wiki: https://github.com/itzCozi/UPM/wiki\n')
+      file.write('''
+Commands | Description
+init : Creates `upm` folder and repository
+about : Displays relitive context
+commit : Create a new commit with given name
+track : Starts saving given file
+untrack : Removes given save file
+update : Update the given tracked file
+build : Create a new build and store it in repository
+clear_changes : Wipes the changes file
+uninit : Deletes detected repository
+      ''')
+      file.close()
+
   def argHandler():
     if sys.argv[1] == 'init':
       commands.init()
@@ -226,4 +251,5 @@ try:
   driver.argHandler()
 except Exception as e:
   print(f'CRIT-ERROR: A unkown runtime-error occurred. \n{e}\n')
+  driver.mercyHelper()
   sys.exit(1)
