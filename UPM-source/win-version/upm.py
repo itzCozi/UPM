@@ -207,59 +207,45 @@ class commands:
       sys.exit(1)
       
 
-class _upm:
+class utility:
 
   @staticmethod
-  # Returns all files in the baseDir
-  def getFiles(baseDir):
-    files = []
-    for r, d, f in os.walk(baseDir):
-      for file in f:
-        file_path = os.path.join(r, file)
-      if os.path.exists(file_path):
-        files.append(file_path)
-
-    return files
-
-  class utility:
-
-    @staticmethod
-    def setup():
-      # Setup program files and dependencies
-      if os.path.exists(globals.scoop_Dir):
-        if debug:
-          print('Scoop is already installed. ')
-        pass
-      else:
-        subprocess.call(f'{globals.powershell} iwr -useb get.scoop.sh | iex')
-
-      if os.path.exists(globals.scoop_Dir):
-        if not os.path.exists(globals.scoopApp_Dir):
-          os.mkdir(globals.scoopApp_Dir)
-
-        if not os.path.exists(globals.scoopShim_File):
-          with open(globals.scoopShim_File, 'w') as file:
-            file.write(f'@"{globals.scoopApp_File}" %*')
-        if debug:
-          print(f'Program file {globals.scoopShim_File} !MISSING!')
-
-        if not os.path.exists(globals.scoopApp_File):
-          try:
-            _upm.utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
-          except Exception as e:
-            print(f'ERROR: Cant install file from web, Did you change the name of the file? \n{e}\n')
-            sys.exit(1)
-          if debug:
-            print(f'Program file {globals.scoopApp_File} !MISSING!')
-      else:
-        pass
-
-    def install(URL, destination, NewName):
-      # Download and write to file
-      file_content = requests.get(URL)
-      open(f'{destination}/{NewName}', 'wb').write(file_content.content)
+  def setup():
+    # Setup program files and dependencies
+    if os.path.exists(globals.scoop_Dir):
       if debug:
-        print(f'Downloaded file to: {destination}')
+        print('Scoop is already installed. ')
+      pass
+    else:
+      subprocess.call(f'{globals.powershell} iwr -useb get.scoop.sh | iex')
+
+    if os.path.exists(globals.scoop_Dir):
+      if not os.path.exists(globals.scoopApp_Dir):
+        os.mkdir(globals.scoopApp_Dir)
+
+      if not os.path.exists(globals.scoopShim_File):
+        with open(globals.scoopShim_File, 'w') as file:
+          file.write(f'@"{globals.scoopApp_File}" %*')
+      if debug:
+        print(f'Program file {globals.scoopShim_File} !MISSING!')
+
+      if not os.path.exists(globals.scoopApp_File):
+        try:
+          utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
+        except Exception as e:
+          print(f'ERROR: Cant install file from web, Did you change the name of the file? \n{e}\n')
+          sys.exit(1)
+        if debug:
+          print(f'Program file {globals.scoopApp_File} !MISSING!')
+    else:
+      pass
+
+  def install(URL, destination, NewName):
+    # Download and write to file
+    file_content = requests.get(URL)
+    open(f'{destination}/{NewName}', 'wb').write(file_content.content)
+    if debug:
+      print(f'Downloaded file to: {destination}')
 
 
 class driver:
