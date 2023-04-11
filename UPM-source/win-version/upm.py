@@ -1,5 +1,4 @@
 # Version control system like git using scoop to implement as a terminal app
-import hashlib
 import os, sys
 import requests
 import shutil
@@ -251,6 +250,7 @@ class utility:
 class driver:
 
   def mercyHelper():
+    # This creates a file called HELP.txt with helpful info
     if os.path.exists(globals.upm_files.repository):
       new_file = f'{globals.upm_files.repository}/HELP.txt'
     else:

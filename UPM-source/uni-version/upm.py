@@ -168,6 +168,7 @@ class commands:
       sys.exit(1)
       
   def clear_changes():
+    # Clears the changes file
     changes_file = globals.upm_files.changes_File
     try:
       if os.path.exists(changes_file):
@@ -183,6 +184,7 @@ class commands:
 class driver:
 
   def mercyHelper():
+    # This creates a file called HELP.txt with helpful info
     if os.path.exists(globals.upm_files.repository):
       new_file = f'{globals.upm_files.repository}/HELP.txt'
     else:
