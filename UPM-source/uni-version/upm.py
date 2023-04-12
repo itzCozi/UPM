@@ -154,7 +154,7 @@ class commands:
       try:
         with open(file, 'r') as Fout:
           file_content = Fout.read()
-          with open(f'{globals.upm_files.tracked_Dir}/{file_name}','w') as Fin:
+          with open(f'{globals.upm_files.tracked_Dir}/{file_name}', 'w') as Fin:
             Fin.write(str(file_content))
           with open(f'{globals.upm_files.changes_File}', 'a') as log:
             log.write(f'{file_name} | Tracked file has been updated AT - {globals.now}')
@@ -166,7 +166,7 @@ class commands:
     else:
       print('ERROR: Given file is not being tracked.')
       sys.exit(1)
-      
+
   def clear_changes():
     # Clears the changes file
     changes_file = globals.upm_files.changes_File
@@ -217,7 +217,7 @@ uninit : Deletes detected repository
       try:
         commands.commit(str(sys.argv[2]), str(sys.argv[3]))
       except IndexError:
-        print("Please provide proper parameters : commit 'C:/project/source' Bug Fix #69")
+        print(f"Please provide proper parameters : commit 'C:/project/source' Bug Fix #69")
     elif sys.argv[1] == 'track':
       try:
         commands.track(sys.argv[2])
@@ -243,7 +243,7 @@ uninit : Deletes detected repository
         commands.clear_changes()
       except Exception as e:
         print(f"A unkown runtime error occurred. \n{e}\n")
-      
+
     else:
       print("To use UPM you must pass an argument via the command-line such as: \
         \npython upm.py track 'happy-420/snoop.cpp'")

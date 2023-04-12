@@ -166,7 +166,7 @@ class commands:
       try:
         with open(file, 'r') as Fout:
           file_content = Fout.read()
-          with open(f'{globals.upm_files.tracked_Dir}/{file_name}','w') as Fin:
+          with open(f'{globals.upm_files.tracked_Dir}/{file_name}', 'w') as Fin:
             Fin.write(str(file_content))
           with open(f'{globals.upm_files.changes_File}', 'a') as log:
             log.write(f'{file_name} | Tracked file has been updated AT - {globals.now}')
@@ -178,7 +178,7 @@ class commands:
     else:
       print('ERROR: Given file is not being tracked.')
       sys.exit(1)
-      
+
   def clear_changes():
     # Clear the changes file
     changes_file = globals.upm_files.changes_File
@@ -191,9 +191,9 @@ class commands:
     except Exception as e:
       print(f'ERROR: Could not access changes file. \n{e}\n')
       sys.exit(1)
-        
+
   def uninit():
-    # Deletes the repository 
+    # Deletes the repository
     try:
       for d in os.walk(globals.upm_files.current_Dir):
         for folder in d:
@@ -204,7 +204,7 @@ class commands:
     except Exception as e:
       print(f'ERROR: Could not access needed files. \n{e}\n')
       sys.exit(1)
-      
+
 
 class utility:
 
@@ -311,7 +311,7 @@ uninit : Deletes detected repository
         commands.build(sys.argv[2], sys.argv[3], sys.argv[4])
       except Exception as e:
         print(f"Please provide proper parameters : build 'C:/UPM.txt' TESTBUILD 1.0.0 \n{e}\n")
-    
+
     else:
       print("To use UPM you must pass an argument via the command-line such as: \
         \npython upm.py track 'happy-420/snoop.cpp'")
@@ -323,4 +323,3 @@ except Exception as e:
   print(f'CRIT-ERROR: A unkown runtime-error occurred. \n{e}\n')
   driver.mercyHelper()
   sys.exit(1)
-  
