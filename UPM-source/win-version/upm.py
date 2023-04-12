@@ -217,6 +217,9 @@ class utility:
       pass
     else:
       subprocess.call(f'{globals.powershell} iwr -useb get.scoop.sh | iex')
+      print('We have installed scoop for you this is so you can use\
+            \nour program with calling to it with `python upm.py`\
+            \n instead try and use `upm` to call to the program.\n')
 
     if os.path.exists(globals.scoop_Dir):
       if not os.path.exists(globals.scoopApp_Dir):
