@@ -313,7 +313,7 @@ scoop_setup : Sets up scoop console app
       commands.scoop_setup()
     elif sys.argv[1] == 'commit':
       try:
-        commands.commit(str(sys.argv[2]), str(sys.argv[3]))
+        commands.commit(sys.argv[2], sys.argv[3])
       except IndexError:
         print("Please provide proper parameters : commit 'C:/project/source' Bug Fix #69")
     elif sys.argv[1] == 'track':

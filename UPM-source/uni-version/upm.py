@@ -235,7 +235,7 @@ uninit : Deletes detected repository
       commands.about()
     elif sys.argv[1] == 'commit':
       try:
-        commands.commit(str(sys.argv[2]), str(sys.argv[3]))
+        commands.commit(sys.argv[2], sys.argv[3])
       except IndexError:
         print(f"Please provide proper parameters : commit 'C:/project/source' Bug Fix #69")
     elif sys.argv[1] == 'track':
