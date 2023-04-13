@@ -16,7 +16,8 @@ class globals:
 
 
 class commands:
-
+  
+  @staticmethod
   def about():
     # Simply prints the version and github
     print('----- Universal Program Manager -----\n')
@@ -25,6 +26,7 @@ class commands:
     print('Github: https://github.com/itzCozi/UPM')
     return True
 
+  @staticmethod
   def init():
     # Creates and sets up the folder system in current folder that archives changes
     try:
@@ -41,6 +43,7 @@ class commands:
       print(f'ERROR: An error occured, repository not created. \n{e}\n')
       sys.exit(1)
 
+  @staticmethod
   def commit(dir, message):
     # Commit a draft as a folder
     if os.path.exists(dir):
@@ -77,6 +80,7 @@ class commands:
       print(f'{commit_Dir} | New commit has been made.')
       return True
 
+  @staticmethod
   def track(file):
     # Starts tracking a file's changes
     if os.path.exists(file):
@@ -94,6 +98,7 @@ class commands:
       print('ERROR: File cannont be found.')
       sys.exit(1)
 
+  @staticmethod
   def untrack(file):
     # Just untracks the file
     file_name = os.path.basename(file).split('/')[-1]
@@ -109,11 +114,12 @@ class commands:
         print(f'ERROR: Could not access tracked file. \n{e}\n')
         sys.exit(1)
     else:
-      print('Given file does not exists.')
+      print('ERROR: Given file does not exists.')
       sys.exit(1)
 
+  @staticmethod
   def build(dir, name, version):
-    # Creates a compiled version of the project
+    # Creates a folder containing a compiled version of the project
     if os.path.exists(dir):
       formatted_name = name.replace(' ', '-')
       build_Dir = f'{globals.upm_files.builds}/{formatted_name}-{version}'
@@ -147,6 +153,7 @@ class commands:
       print(f'{build_Dir} | New build has been created.')
       return True
 
+  @staticmethod
   def update(file):
     # Updates the saved file with the given file
     file_name = os.path.basename(file).split('/')[-1]
@@ -167,6 +174,17 @@ class commands:
       print('ERROR: Given file is not being tracked.')
       sys.exit(1)
 
+  @staticmethod
+  def change_repo(repo):
+    dummy_repo = str(f'{globals.upm_files.current_Dir}/{repo}')
+    if os.path.exists(dummy_repo):
+      globals.upm_files.current_repository = str(repo)
+      print(f'{repo} | Working repository has been changed.')
+    else:
+      print('ERROR: Given repository doesnt exist in current directory')
+      sys.exit(1)
+
+  @staticmethod
   def clear_changes():
     # Clears the changes file
     changes_file = globals.upm_files.changes_File
@@ -183,6 +201,7 @@ class commands:
 
 class driver:
 
+  @staticmethod
   def mercyHelper():
     # This creates a file called HELP.txt with helpful info
     if os.path.exists(globals.upm_files.repository):
@@ -208,6 +227,7 @@ uninit : Deletes detected repository
       ''')
       file.close()
 
+  @staticmethod
   def argHandler():
     if sys.argv[1] == 'init':
       commands.init()
@@ -233,6 +253,11 @@ uninit : Deletes detected repository
         commands.update(sys.argv[2])
       except Exception as e:
         print(f"Please provide proper parameters : update 'C:/test.txt' \n{e}\n")
+    elif sys.argv[1] == 'change_repo':
+      try:
+        commands.change_repo(sys.argv[2])
+      except Exception as e:
+        print(f"Please provide proper parameters : change_repo 'Extra' \n{e}\n")
     elif sys.argv[1] == 'build':
       try:
         commands.build(sys.argv[2], sys.argv[3], sys.argv[4])
