@@ -1,6 +1,5 @@
 # Version control system like git using scoop to implement as a terminal app
 import os, sys
-import requests
 import shutil
 import subprocess
 from datetime import datetime
@@ -210,6 +209,15 @@ class commands:
     except Exception as e:
       print(f'ERROR: Could not access changes file. \n{e}\n')
       sys.exit(1)
+      
+  @staticmethod    
+  def scoop_setup():
+    try:
+      utility.setup()
+      print('Scoop app setup use `upm` to call to it.')
+    except Exception as e:
+      print(f'ERROR: Could not setup scoop app. \n{e}\n')
+      sys.exit(1)
 
   @staticmethod
   def uninit():
@@ -251,22 +259,14 @@ class utility:
         print(f'Program file {globals.scoopShim_File} !MISSING!')
 
       if not os.path.exists(globals.scoopApp_File):
-        try:
-          utility.install(globals.web_file, globals.scoopApp_Dir, '/upm.py')
-        except Exception as e:
-          print(f'ERROR: Cant install file from web, Did you change the name of the file? \n{e}\n')
-          sys.exit(1)
+        with open(__file__, 'r') as Fout:
+          file_content = Fout.read()
+        with open(globals.scoopApp_File, 'w') as Fin:
+          Fin.write(file_content)
         if debug:
           print(f'Program file {globals.scoopApp_File} !MISSING!')
     else:
       pass
-
-  def install(URL, destination, NewName):
-    # Download and write to file
-    file_content = requests.get(URL)
-    open(f'{destination}/{NewName}', 'wb').write(file_content.content)
-    if debug:
-      print(f'Downloaded file to: {destination}')
 
 
 class driver:
@@ -294,7 +294,8 @@ update : Update the given tracked file
 build : Create a new build and store it in repository
 clear_changes : Wipes the changes file
 uninit : Deletes detected repository
-change_repo : changes working repository
+change_repo : Changes working repository
+scoop_setup : Sets up scoop console app
       ''')
       file.close()
 
@@ -308,6 +309,8 @@ change_repo : changes working repository
       commands.uninit()
     elif sys.argv[1] == 'clear_changes':
       commands.clear_changes()
+    elif sys.argv[1] == 'scoop_setup':
+      commands.scoop_setup()
     elif sys.argv[1] == 'commit':
       try:
         commands.commit(str(sys.argv[2]), str(sys.argv[3]))
