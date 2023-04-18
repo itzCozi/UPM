@@ -209,11 +209,11 @@ class commands:
     except Exception as e:
       print(f'ERROR: Could not access changes file. \n{e}\n')
       sys.exit(1)
-      
-  @staticmethod    
+
+  @staticmethod
   def scoop_setup():
     try:
-      utility.setup()
+      utility.scoopSetup()
       print('Scoop app setup use `upm` to call to it.')
     except Exception as e:
       print(f'ERROR: Could not setup scoop app. \n{e}\n')
@@ -236,7 +236,7 @@ class commands:
 
 class utility:
 
-  def setup():
+  def scoopSetup():
     # Setup program files and dependencies
     if os.path.exists(globals.scoop_Dir):
       if debug:
@@ -270,7 +270,7 @@ class utility:
 
 
 class driver:
-  
+
   @staticmethod
   def mercyHelper():
     # This creates a file called HELP.txt with helpful info
