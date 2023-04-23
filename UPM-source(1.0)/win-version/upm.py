@@ -233,6 +233,17 @@ class commands:
     except Exception as e:
       print(f'ERROR: Could not access needed files. \n{e}\n')
       sys.exit(1)
+      
+  @staticmethod
+  def zip_repo(name):
+    zip_location = f'{globals.upm_files.current_Dir}/{name}'
+    zip_obj = shutil.make_archive(zip_location, 'zip', globals.upm_files.repository)
+    
+    if os.path.exists(zip_location):
+      print('Zip already created.')
+    else:
+      zip_obj
+      print(f'Zip called {name} created.')
 
 
 class utility:
@@ -342,6 +353,11 @@ scoop_setup : Sets up scoop console app
         commands.build(sys.argv[2], sys.argv[3], sys.argv[4])
       except Exception as e:
         print(f"Please provide proper parameters : build 'C:/UPM.txt' TESTBUILD 1.0.0 \n{e}\n")
+    elif sys.argv[1] == 'zip_repo':
+      try:
+        commands.zip_repo(sys.argv[2])
+      except Exception as e:
+        print(f"Please provide proper parameters : zip_repo 'C:/upm' Obama-Coding16 \n{e}\n")
 
     else:
       print("To use UPM you must pass an argument via the command-line such as: \
