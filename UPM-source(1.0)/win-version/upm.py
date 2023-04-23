@@ -213,7 +213,7 @@ class commands:
   @staticmethod
   def scoop_setup():
     try:
-      utility.scoopSetup()
+      driver.scoopSetup()
       print('Scoop app setup use `upm` to call to it.')
     except Exception as e:
       print(f'ERROR: Could not setup scoop app. \n{e}\n')
@@ -246,8 +246,9 @@ class commands:
       print(f'Zip called {name} created.')
 
 
-class utility:
+class driver:
 
+  @staticmethod
   def scoopSetup():
     # Setup program files and dependencies
     if os.path.exists(globals.scoop_Dir):
@@ -256,9 +257,9 @@ class utility:
       pass
     else:
       subprocess.call(f'{globals.powershell} iwr -useb get.scoop.sh | iex')
-      print('We have installed scoop for you this is so you can use\
-            \nour program with calling to it with `python upm.py`\
-            \n instead try and use `upm` to call to the program.\n')
+      print('We have installed scoop for you this is so you can use \
+        \nour program with calling to it with `python upm.py` \
+        \ninstead try and use `upm` to call to the program.')
 
     if os.path.exists(globals.scoop_Dir):
       if not os.path.exists(globals.scoopApp_Dir):
@@ -279,9 +280,6 @@ class utility:
           print(f'Program file {globals.scoopApp_File} !MISSING!')
     else:
       pass
-
-
-class driver:
 
   @staticmethod
   def mercyHelper():
@@ -308,6 +306,7 @@ clear_changes : Wipes the changes file
 uninit : Deletes detected repository
 change_repo : Changes working repository
 scoop_setup : Sets up scoop console app
+zip_repo : Zips the current repository and names it
       ''')
       file.close()
 
@@ -352,7 +351,7 @@ scoop_setup : Sets up scoop console app
       try:
         commands.build(sys.argv[2], sys.argv[3], sys.argv[4])
       except Exception as e:
-        print(f"Please provide proper parameters : build 'C:/UPM.txt' TESTBUILD 1.0.0 \n{e}\n")
+        print(f"Please provide proper parameters : build 'C:/upm.txt' TESTBUILD 1.0.0 \n{e}\n")
     elif sys.argv[1] == 'zip_repo':
       try:
         commands.zip_repo(sys.argv[2])
@@ -360,13 +359,23 @@ scoop_setup : Sets up scoop console app
         print(f"Please provide proper parameters : zip_repo 'C:/upm' Obama-Coding16 \n{e}\n")
 
     else:
-      print("To use UPM you must pass an argument via the command-line such as: \
+      print("To use upm you must pass vaild arguments via the command-line such as: \
         \npython upm.py track 'happy-420/snoop.cpp'")
 
 
-try:
-  driver.argHandler()
-except Exception as e:
-  print(f'CRIT-ERROR: A unkown runtime-error occurred. \n{e}\n')
-  driver.mercyHelper()
+if __name__ == '__main__':
+  try:
+    driver.argHandler()
+  except IndexError:
+    driver.mercyHelper()
+    print('ERROR: No arguments passed.')
+    sys.exit(1)
+  except Exception as e:
+    print(f'CRIT-ERROR: A unkown runtime-error occurred. \n{e}\n')
+    driver.mercyHelper()
+    sys.exit(1)
+else:
+  print('You cannot use upm as a import instead \
+    \ndrag it into your project directory and pass \
+    \narguments using the console or terminal in VSCode.')
   sys.exit(1)

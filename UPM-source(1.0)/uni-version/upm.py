@@ -251,6 +251,7 @@ update : Update the given tracked file
 build : Create a new build and store it in repository
 clear_changes : Wipes the changes file
 uninit : Deletes detected repository
+zip_repo : Zips the repository and names it
       ''')
       file.close()
 
@@ -291,7 +292,7 @@ uninit : Deletes detected repository
       try:
         commands.build(sys.argv[2], sys.argv[3], sys.argv[4])
       except Exception as e:
-        print(f"Please provide proper parameters : build 'C:/UPM.txt' TESTBUILD 1.0.0 \n{e}\n")
+        print(f"Please provide proper parameters : build 'C:/upm.txt' TESTBUILD 1.0.0 \n{e}\n")
     elif sys.argv[1] == 'clear_changes':
       try:
         commands.clear_changes()
@@ -304,13 +305,23 @@ uninit : Deletes detected repository
         print(f"Please provide proper parameters : zip_repo 'C:/upm' Obama-Coding16 \n{e}\n")
 
     else:
-      print("To use UPM you must pass an argument via the command-line such as: \
+      print("To use upm you must pass vaild arguments via the command-line such as: \
         \npython upm.py track 'happy-420/snoop.cpp'")
 
 
-try:
-  driver.argHandler()
-except Exception as e:
-  print(f'CRIT-ERROR: A unkown runtime-error occurred. \n{e}\n')
-  driver.mercyHelper()
+if __name__ == '__main__':
+  try:
+    driver.argHandler()
+  except IndexError:
+    driver.mercyHelper()
+    print('ERROR: No arguments passed.')
+    sys.exit(1)
+  except Exception as e:
+    print(f'CRIT-ERROR: A unkown runtime-error occurred. \n{e}\n')
+    driver.mercyHelper()
+    sys.exit(1)
+else:
+  print('You cannot use upm as a import instead \
+    \ndrag it into your project directory and pass \
+    \narguments using the console or terminal in VSCode.')
   sys.exit(1)
