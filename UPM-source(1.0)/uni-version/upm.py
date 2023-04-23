@@ -198,6 +198,21 @@ class commands:
       print(f'ERROR: Could not access changes file. \n{e}\n')
       sys.exit(1)
 
+  @staticmethod
+  def uninit():
+    # Deletes the repository
+    try:
+      for d in os.walk(globals.upm_files.current_Dir):
+        for folder in d:
+          if str(folder) == 'upm':
+            for d in os.walk(folder):
+              os.remove(d)
+          else:
+            pass
+    except Exception as e:
+      print(f'ERROR: Could not access needed files. \n{e}\n')
+      sys.exit(1)
+
 
 class driver:
 
