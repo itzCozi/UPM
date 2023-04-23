@@ -223,12 +223,13 @@ class commands:
   def uninit():
     # Deletes the repository
     try:
-      for d in os.walk(globals.upm_files.current_Dir):
-        for folder in d:
-          if str(folder) == 'upm':
-            shutil.rmtree(folder)
-          else:
-            pass
+      for dir in os.listdir(globals.upm_files.current_Dir):
+        if dir == 'upm':
+          shutil.rmtree(dir)
+          print(f'Repository {dir} has been deleted.')
+          break
+        else:
+          pass
     except Exception as e:
       print(f'ERROR: Could not access needed files. \n{e}\n')
       sys.exit(1)
@@ -303,10 +304,10 @@ scoop_setup : Sets up scoop console app
   def argHandler():
     if sys.argv[1] == 'init':
       commands.init()
-    elif sys.argv[1] == 'about':
-      commands.about()
     elif sys.argv[1] == 'uninit':
       commands.uninit()
+    elif sys.argv[1] == 'about':
+      commands.about()
     elif sys.argv[1] == 'clear_changes':
       commands.clear_changes()
     elif sys.argv[1] == 'scoop_setup':

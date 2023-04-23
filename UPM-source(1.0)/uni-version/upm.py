@@ -1,4 +1,5 @@
 import os, sys
+import shutil
 from datetime import datetime
 
 
@@ -202,13 +203,13 @@ class commands:
   def uninit():
     # Deletes the repository
     try:
-      for d in os.walk(globals.upm_files.current_Dir):
-        for folder in d:
-          if str(folder) == 'upm':
-            for d in os.walk(folder):
-              os.remove(d)
-          else:
-            pass
+      for dir in os.listdir(globals.upm_files.current_Dir):
+        if dir == 'upm':
+          shutil.rmtree(dir)
+          print(f'Repository {dir} has been deleted.')
+          break
+        else:
+          pass
     except Exception as e:
       print(f'ERROR: Could not access needed files. \n{e}\n')
       sys.exit(1)
@@ -246,6 +247,8 @@ uninit : Deletes detected repository
   def argHandler():
     if sys.argv[1] == 'init':
       commands.init()
+    elif sys.argv[1] == 'uninit':
+      commands.uninit()
     elif sys.argv[1] == 'about':
       commands.about()
     elif sys.argv[1] == 'commit':
