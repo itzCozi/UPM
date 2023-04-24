@@ -23,6 +23,7 @@ class globals:
     current_repository = 'upm'
     repository = str(f'{current_Dir}/{current_repository}')
     tracked_Dir = str(f'{repository}/tracked_files')
+    encoded_Dir = str(f'{tracked_Dir}/encoded')
     commits = str(f'{repository}/commits')
     builds = str(f'{repository}/builds')
     changes_File = str(f'{repository}/changes.txt')
@@ -45,6 +46,7 @@ class commands:
     try:
       os.mkdir(globals.upm_files.repository)
       os.mkdir(globals.upm_files.tracked_Dir)
+      os.mkdir(globals.upm_files.encoded_Dir)
       os.mkdir(globals.upm_files.commits)
       os.mkdir(globals.upm_files.builds)
       open(globals.upm_files.changes_File, 'w')

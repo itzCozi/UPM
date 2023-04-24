@@ -5,6 +5,7 @@ class upm_files:
   current_repository = 'upm'
   repository = str(f'{current_Dir}/{current_repository}')
   tracked_Dir = str(f'{repository}/tracked_files')
+  encoded_Dir = str(f'{tracked_Dir}/encoded')
   commits = str(f'{repository}/commits')
   builds = str(f'{repository}/builds')
   changes_File = str(f'{repository}/changes.txt')
@@ -168,17 +169,19 @@ class encode:
       print('ERROR: File not tracked.')
     
     with open(file, 'r+') as File:
+      file_name = os.path.basename(file).split('/')[-1]
       write_back = File.read()
       for line in write_back:
 
         for word in line.split(' '):
           word_list = list(word)
-
+          
           for letter in word_list:
             if letter.isalpha():
               write_back = write_back.replace(letter, encode.tick(letter))
 
       with open(f'{globals.upm_files.tracked_Dir}/{file}.enc', 'w') as Fout:
+        print(f'Encoded {file_name} and created tracked file.')
         Fout.write(write_back)
         File.close()
 
