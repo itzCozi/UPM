@@ -162,6 +162,32 @@ class encode:
       return '80'
     if '9' in letter:
       return '90'
+    
+    if '!' in letter:
+      return ';'
+    if '@' in letter:
+      return '*'
+    if '#' in letter:
+      return ':-'
+    if '$' in letter:
+      return '::'
+    if '%' in letter:
+      return '&*'
+    if '^' in letter:
+      return '@-'
+    if '&' in letter:
+      return '!<'
+    if '*' in letter:
+      return '_-_'
+    if '(' or ')' in letter:
+      return '|'
+    if '-' or '_' in letter:
+      return '_--'
+    if '+' in letter:
+      return '++'
+    if '=' in letter:
+      return '=?'
+
 
   
   def encode_file(file):
