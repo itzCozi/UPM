@@ -180,7 +180,7 @@ class encode:
             if letter.isalpha():
               write_back = write_back.replace(letter, encode.tick(letter))
 
-      with open(f'{tracked_Dir}/{file}.enc', 'w') as Fout:
+      with open(f'{encoded_Dir}/{file}', 'w') as Fout:
         print(f'Encoded {file_name} and created tracked file.')
         Fout.write(write_back)
         File.close()

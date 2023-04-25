@@ -228,6 +228,15 @@ class commands:
       zip_obj
       print(f'Zip called {name} created.')
 
+  @staticmethod
+  def add_readme():
+    readme_file = f'{globals.upm_files.repository}/README.md'
+    open(readme_file, 'x')
+    
+    with open (readme_file, 'r+') as file:
+      file.write('Please edit this `README.md` made by upm.')
+      file.close()
+
 
 class driver:
 
@@ -266,11 +275,18 @@ zip_repo : Zips the repository and names it
       commands.uninit()
     elif sys.argv[1] == 'about':
       commands.about()
+    elif sys.argv[1] == 'add_readme':
+      commands.add_readme()
+    elif sys.argv[1] == 'add_manifest':
+      try:
+        commands.add_manifest(sys.argv[2])
+      except Exception as e:
+        print(f"Please provide proper parameters : add_manifest 'website-repo' \n{e}\n")
     elif sys.argv[1] == 'commit':
       try:
         commands.commit(sys.argv[2], sys.argv[3])
-      except IndexError:
-        print(f"Please provide proper parameters : commit 'C:/project/source' Bug Fix #69")
+      except Exception as e:
+        print(f"Please provide proper parameters : commit 'C:/project/source' Bug Fix #69 \n{e}\n")
     elif sys.argv[1] == 'track':
       try:
         commands.track(sys.argv[2])
