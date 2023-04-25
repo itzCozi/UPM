@@ -1,14 +1,14 @@
 import os, sys
 
-class upm_files:
-  current_Dir = os.getcwd()
-  current_repository = 'upm'
-  repository = str(f'{current_Dir}/{current_repository}')
-  tracked_Dir = str(f'{repository}/tracked_files')
-  encoded_Dir = str(f'{tracked_Dir}/encoded')
-  commits = str(f'{repository}/commits')
-  builds = str(f'{repository}/builds')
-  changes_File = str(f'{repository}/changes.txt')
+current_Dir = os.getcwd()
+current_repository = 'upm'
+repository = str(f'{current_Dir}/{current_repository}')
+tracked_Dir = str(f'{repository}/tracked_files')
+encoded_Dir = str(f'{tracked_Dir}/encoded')
+commits = str(f'{repository}/commits')
+builds = str(f'{repository}/builds')
+changes_File = str(f'{repository}/changes.txt')
+
 
 class encode:
   
@@ -165,7 +165,7 @@ class encode:
 
   
   def encode_file(file):
-    if not os.path.exists(f'{upm_files.tracked_Dir}/{file}'):
+    if not os.path.exists(f'{tracked_Dir}/{file}'):
       print('ERROR: File not tracked.')
     
     with open(file, 'r+') as File:
@@ -180,7 +180,7 @@ class encode:
             if letter.isalpha():
               write_back = write_back.replace(letter, encode.tick(letter))
 
-      with open(f'{globals.upm_files.tracked_Dir}/{file}.enc', 'w') as Fout:
+      with open(f'{tracked_Dir}/{file}.enc', 'w') as Fout:
         print(f'Encoded {file_name} and created tracked file.')
         Fout.write(write_back)
         File.close()
