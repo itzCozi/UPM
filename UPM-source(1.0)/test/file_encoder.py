@@ -11,50 +11,13 @@ changes_File = str(f'{repository}/changes.txt')
 
   
 class encode:
-  # Letter: X-
-  # Numer: ~1
-  a = 'u44'
-  b = 's76'
-  c = 'm96'
-  d = 'l86'
-  e = 'j75'
-  f = 'p39'
-  h = 'l80'
-  i = 'o89'
-  j = 'c99'
-  k = 'e76'
-  l = 'x56'
-  m = 'v73'
-  n = 'b34'
-  o = 'g63'
-  p = 'n54'
-  q = 'f96'
-  r = 'x97'
-  s = 'w19'
-  t = 'v98'
-  u = 'c48'
-  v = 's36'
-  w = 't33'
-  x = 'w89'
-  y = 'n21'
-  z = 'j68'
-  1 = 'O9'
-  2 = 'J8'
-  3 = 'F4'
-  4 = 'J0'
-  5 = 'G1'
-  6 = 'Y4'
-  7 = 'O0'
-  8 = 'R9'
-  9 = 'C2'
-  0 = 'S6'
    
   def tick(letter):
     if 'a' or 'A' in letter:
       if 'a' in letter:
-        return 'u44'
+        return '001'
       if 'A' in letter:
-        return 'u44'
+        return '011'
     if 'b' or 'B' in letter:
       if 'b' in letter:
         return '002'
