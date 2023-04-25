@@ -38,23 +38,23 @@ class encode:
   x = 'w89'
   y = 'n21'
   z = 'j68'
-  _1 = 'O9'
-  _2 = 'J8'
-  _3 = 'F4'
-  _4 = 'J0'
-  _5 = 'G1'
-  _6 = 'Y4'
-  _7 = 'O0'
-  _8 = 'R9'
-  _9 = 'C2'
-  _0 = 'S6'
+  1 = 'O9'
+  2 = 'J8'
+  3 = 'F4'
+  4 = 'J0'
+  5 = 'G1'
+  6 = 'Y4'
+  7 = 'O0'
+  8 = 'R9'
+  9 = 'C2'
+  0 = 'S6'
    
   def tick(letter):
     if 'a' or 'A' in letter:
       if 'a' in letter:
         return 'u44'
       if 'A' in letter:
-        return ''
+        return 'u44'
     if 'b' or 'B' in letter:
       if 'b' in letter:
         return '002'
