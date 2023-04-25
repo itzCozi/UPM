@@ -15,134 +15,134 @@ class encode:
   def tick(letter):
     if 'a' or 'A' in letter:
       if 'a' in letter:
-        return '001'
+        return 'a01'
       if 'A' in letter:
-        return '011'
+        return 'A11'
     if 'b' or 'B' in letter:
       if 'b' in letter:
-        return '002'
+        return 'b02'
       if 'B' in letter:
-        return '021' 
+        return 'B21' 
     if 'c' or 'C' in letter:
       if 'c' in letter:
-        return '003'
+        return 'c03'
       if 'C' in letter:
-        return '031'
+        return 'C31'
     if 'd' or 'D' in letter:
       if 'd' in letter:
-        return '004'
+        return 'd04'
       if 'D' in letter:
-        return '041'
+        return 'D41'
     if 'e' or 'E' in letter:
       if 'e' in letter:
-        return '005'
+        return 'e05'
       if 'E' in letter:
-        return '051'
+        return 'E51'
     if 'f' or 'B' in letter:
       if 'f' in letter:
-        return '006'
+        return 'f06'
       if 'F' in letter:
-        return '061'
+        return 'F61'
     if 'g' or 'G' in letter:
       if 'g' in letter:
-        return '007'
+        return 'g07'
       if 'G' in letter:
-        return '071'
+        return 'G71'
     if 'h' or 'H' in letter:
       if 'h' in letter:
-        return '008'
+        return 'h08'
       if 'H' in letter:
-        return '081'
+        return 'H81'
     if 'i' or 'I' in letter:
       if 'i' in letter:
-        return '009'
+        return 'i09'
       if 'I' in letter:
-        return '091'
+        return 'I91'
     if 'j' or 'J' in letter:
       if 'j' in letter:
-        return '100'
+        return 'j10'
       if 'J' in letter:
-        return '110'
+        return 'J11'
     if 'k' or 'K' in letter:
       if 'k' in letter:
-        return '200'
+        return 'k20'
       if 'K' in letter:
-        return '210'
+        return 'K21'
     if 'l' or 'L' in letter:
       if 'l' in letter:
-        return '300'
+        return 'l30'
       if 'L' in letter:
-        return '310'
+        return 'L31'
     if 'm' or 'M' in letter:
       if 'm' in letter:
-        return '400'
+        return 'm40'
       if 'M' in letter:
-        return '410'
+        return 'M41'
     if 'n' or 'N' in letter:
       if 'n' in letter:
-        return '500'
+        return 'n50'
       if 'N' in letter:
-        return '510'
+        return 'N51'
     if 'o' or 'O' in letter:
       if 'o' in letter:
-        return '600'
+        return 'o60'
       if 'O' in letter:
-        return '611'
+        return 'O61'
     if 'p' or 'P' in letter:
       if 'p' in letter:
-        return '700'
+        return 'p70'
       if 'P' in letter:
-        return '710'
+        return 'P71'
     if 'q' or 'Q' in letter:
       if 'q' in letter:
-        return '800'
+        return 'q80'
       if 'Q' in letter:
-        return '810'
+        return 'Q81'
     if 'r' or 'R' in letter:
       if 'r' in letter:
-        return '900'
+        return 'r90'
       if 'R' in letter:
-        return '910'  
+        return 'R91'  
     if 's' or 'S' in letter:
       if 's' in letter:
-        return '010'
+        return 's10'
       if 'S' in letter:
-        return '101'
+        return 'S11'
     if 't' or 'T' in letter:
       if 't' in letter:
-        return '020'
+        return 't20'
       if 'T' in letter:
-        return '201'
+        return 'T21'
     if 'u' or 'U' in letter:
       if 'u' in letter:
-        return '030'
+        return 'u30'
       if 'U' in letter:
-        return '301'
+        return 'U31'
     if 'v' or 'V' in letter:
       if 'v' in letter:
-        return '040'
+        return 'v40'
       if 'V' in letter:
-        return '401'
+        return 'V41'
     if 'w' or 'W' in letter:
       if 'w' in letter:
-        return '050'
+        return 'w50'
       if 'W' in letter:
-        return '501'
+        return 'W51'
     if 'x' or 'X' in letter:
       if 'x' in letter:
-        return '060'
+        return 'x60'
       if 'X' in letter:
-        return '601'
+        return 'X61'
     if 'y' or 'Y' in letter:
       if 'y' in letter:
-        return '070'
+        return 'y70'
       if 'Y' in letter:
-        return '701'
+        return 'Y71'
     if 'z' or 'Z' in letter:
       if 'z' in letter:
-        return '080'
+        return 'z80'
       if 'Z' in letter:
-        return '801'
+        return 'Z81'
     
     if '1' in letter:
       return '10'
