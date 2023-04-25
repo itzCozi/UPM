@@ -9,9 +9,10 @@ class globals:
 
   class upm_files:
     current_Dir = os.getcwd()
-    repository = str(f'{current_Dir}/upm')
+    current_repository = 'upm'
+    repository = str(f'{current_Dir}/{current_repository}')
     tracked_Dir = str(f'{repository}/tracked_files')
-    encoded_Dir = str(f'{tracked_Dir}/encoded')
+    encoded_Dir = str(f'{repository}/encoded')
     commits = str(f'{repository}/commits')
     builds = str(f'{repository}/builds')
     changes_File = str(f'{repository}/changes.txt')

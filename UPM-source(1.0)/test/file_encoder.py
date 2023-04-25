@@ -4,20 +4,57 @@ current_Dir = os.getcwd()
 current_repository = 'upm'
 repository = str(f'{current_Dir}/{current_repository}')
 tracked_Dir = str(f'{repository}/tracked_files')
-encoded_Dir = str(f'{tracked_Dir}/encoded')
+encoded_Dir = str(f'{repository}/encoded')
 commits = str(f'{repository}/commits')
 builds = str(f'{repository}/builds')
 changes_File = str(f'{repository}/changes.txt')
 
-
-class encode:
   
+class encode:
+  # Letter: X-
+  # Numer: ~1
+  a = 'u44'
+  b = 's76'
+  c = 'm96'
+  d = 'l86'
+  e = 'j75'
+  f = 'p39'
+  h = 'l80'
+  i = 'o89'
+  j = 'c99'
+  k = 'e76'
+  l = 'x56'
+  m = 'v73'
+  n = 'b34'
+  o = 'g63'
+  p = 'n54'
+  q = 'f96'
+  r = 'x97'
+  s = 'w19'
+  t = 'v98'
+  u = 'c48'
+  v = 's36'
+  w = 't33'
+  x = 'w89'
+  y = 'n21'
+  z = 'j68'
+  _1 = 'O9'
+  _2 = 'J8'
+  _3 = 'F4'
+  _4 = 'J0'
+  _5 = 'G1'
+  _6 = 'Y4'
+  _7 = 'O0'
+  _8 = 'R9'
+  _9 = 'C2'
+  _0 = 'S6'
+   
   def tick(letter):
     if 'a' or 'A' in letter:
       if 'a' in letter:
-        return '001'
+        return 'u44'
       if 'A' in letter:
-        return '011'
+        return ''
     if 'b' or 'B' in letter:
       if 'b' in letter:
         return '002'
