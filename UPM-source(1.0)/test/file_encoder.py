@@ -182,14 +182,13 @@ class encode:
     if '(' or ')' in letter:
       return '|'
     if '-' or '_' in letter:
-      return '_--'
+      return '--'
     if '+' in letter:
       return '++'
     if '=' in letter:
       return '=?'
 
 
-  
   def encode_file(file):
     if not os.path.exists(f'{tracked_Dir}/{file}'):
       print('ERROR: File not tracked.')
