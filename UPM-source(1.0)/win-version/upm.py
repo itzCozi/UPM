@@ -1,4 +1,3 @@
-# Version control system like git using scoop to implement as a terminal app
 import os, sys
 import shutil
 import subprocess

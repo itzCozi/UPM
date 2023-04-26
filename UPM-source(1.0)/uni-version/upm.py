@@ -177,6 +177,7 @@ class commands:
 
   @staticmethod
   def change_repo(repo):
+    # Change the current working repository
     dummy_repo = str(f'{globals.upm_files.current_Dir}/{repo}')
     if os.path.exists(dummy_repo):
       globals.upm_files.current_repository = str(repo)
