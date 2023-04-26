@@ -187,6 +187,10 @@ class encode_decode:
       return '+'
     if '=' in letter:
       return '='
+    
+    else:
+      pass
+    
    
   def tick(letter):
     if 'a' or 'A' in letter:
@@ -363,6 +367,9 @@ class encode_decode:
       return '++'
     if '=' in letter:
       return '=?'
+    
+    else:
+      return letter
 
 
   def decode_file(file):
@@ -428,8 +435,8 @@ try:
     print('This program can only encode tracked files.')
     sys.exit(1)
 except IndexError:
-  print('You must pass `encode` argument followed by \
-    \na file path to encode a tracked file.')
+  print('You must pass `encode` or `decode` argument \
+    \nfollowed by a file path to encode a tracked file.')
   sys.exit(1)
 except Exception as e:
   print(f'CRIT-ERROR: A unkown runtime-error occurred. \n{e}\n')
