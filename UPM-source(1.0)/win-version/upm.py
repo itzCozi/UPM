@@ -190,6 +190,7 @@ class commands:
 
   @staticmethod
   def change_repo(repo):
+    # Change current working repository
     dummy_repo = str(f'{globals.upm_files.current_Dir}/{repo}')
     if os.path.exists(dummy_repo):
       globals.upm_files.current_repository = str(repo)
@@ -214,6 +215,7 @@ class commands:
 
   @staticmethod
   def add_readme():
+    # Add a readme.md to your current repo
     readme_file = f'{globals.upm_files.repository}/README.md'
     open(readme_file, 'x')
     
@@ -222,7 +224,8 @@ class commands:
       file.close()
 
   @staticmethod
-  def scoop_setup():
+  def scoop_setup():\
+    # Setup the scoop app
     try:
       driver.scoopSetup()
       print('Scoop app setup use `upm` to call to it.')
@@ -247,6 +250,7 @@ class commands:
       
   @staticmethod
   def zip_repo(name):
+    # Zip the current repository named after the input
     zip_location = f'{globals.upm_files.current_Dir}/{name}'
     zip_obj = shutil.make_archive(zip_location, 'zip', globals.upm_files.repository)
     
@@ -258,6 +262,7 @@ class commands:
   
   @staticmethod
   def code_file(file, decode_encode):
+    # Automate encoding or decoding files if you have `upm_coder.exe`
     if not os.path.exists(f'{globals.upm_files.current_Dir}/upm_coder.exe'):
       print('ERROR: upm_coder.exe not found in current directory.\
         \nupm_coder.exe can be found on UPM github in releases  \

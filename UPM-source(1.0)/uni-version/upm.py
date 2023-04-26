@@ -216,6 +216,7 @@ class commands:
       
   @staticmethod
   def zip_repo(name):
+    # Zip the current repository named after the input
     zip_location = f'{globals.upm_files.current_Dir}/{name}'
     zip_obj = shutil.make_archive(zip_location, 'zip', globals.upm_files.repository)
     
@@ -227,6 +228,7 @@ class commands:
 
   @staticmethod
   def add_readme():
+    # Add a readme.md to your current repo
     readme_file = f'{globals.upm_files.repository}/README.md'
     open(readme_file, 'x')
     
