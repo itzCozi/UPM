@@ -213,6 +213,15 @@ class commands:
       sys.exit(1)
 
   @staticmethod
+  def add_readme():
+    readme_file = f'{globals.upm_files.repository}/README.md'
+    open(readme_file, 'x')
+    
+    with open (readme_file, 'r+') as file:
+      file.write('Please edit this `README.md` made by upm.')
+      file.close()
+
+  @staticmethod
   def scoop_setup():
     try:
       driver.scoopSetup()
@@ -250,7 +259,9 @@ class commands:
   @staticmethod
   def code_file(file, decode_encode):
     if not os.path.exists(f'{globals.upm_files.current_Dir}/upm_coder.exe'):
-      print('ERROR: upm_coder.exe not found in current directory')
+      print('ERROR: upm_coder.exe not found in current directory.\
+        \nupm_coder.exe can be found on UPM github in releases  \
+        \nsimply pass the `about` command and follow the link')
       sys.exit(1)
    
     try:
@@ -261,7 +272,7 @@ class commands:
       else:
         print(f'ERROR: {decode_encode} is not a vaild input try decode or encode.')
     except Exception as e:
-      print('ERROR: Could not pass command through system')
+      print('ERROR: Could not pass command through system.')
       sys.exit(1)
 
 
@@ -328,6 +339,7 @@ scoop_setup : Sets up scoop console app
 zip_repo : Zips the current repository and names it
 encode_file : Encodes file if you have `upm_coder.exe`
 decode_file : Decodes file if any are in encoded folder
+add_readme : Adds a `README.md` file to the repository
       ''')
       file.close()
 
@@ -343,6 +355,8 @@ decode_file : Decodes file if any are in encoded folder
       commands.clear_changes()
     elif sys.argv[1] == 'scoop_setup':
       commands.scoop_setup()
+    elif sys.argv[1] == 'add_readme':
+      commands.add_readme()
     elif sys.argv[1] == 'commit':
       try:
         commands.commit(sys.argv[2], sys.argv[3])

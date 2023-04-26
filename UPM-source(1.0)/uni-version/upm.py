@@ -61,7 +61,6 @@ class commands:
       sys.exit(1)
 
     for r, d, f in os.walk(dir):
-      # Works but spits out the files in the commit_dir not there folders
       for folder in d or f:
         tracked_folder = os.path.join(r, folder)
         new_Dir = str(f'{commit_Dir}/{dir}')
@@ -262,6 +261,7 @@ build : Create a new build and store it in repository
 clear_changes : Wipes the changes file
 uninit : Deletes detected repository
 zip_repo : Zips the repository and names it
+add_readme : Adds a `README.md` file to the repository
       ''')
       file.close()
 
