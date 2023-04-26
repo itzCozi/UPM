@@ -246,6 +246,23 @@ class commands:
     else:
       zip_obj
       print(f'Zip called {name} created.')
+  
+  @staticmethod
+  def code_file(file, decode_encode):
+    if not os.path.exists(f'{globals.upm_files.current_Dir}/upm_coder.exe'):
+      print('ERROR: upm_coder.exe not found in current directory')
+      sys.exit(1)
+   
+    try:
+      if decode_encode == 'encode':
+        os.system(f'./upm_coder encode {file}')
+      if decode_encode == 'decode':
+        os.system(f'./upm_coder decode {file}')
+      else:
+        print(f'ERROR: {decode_encode} is not a vaild input try decode or encode.')
+    except Exception as e:
+      print('ERROR: Could not pass command through system')
+      sys.exit(1)
 
 
 class driver:
@@ -309,6 +326,8 @@ uninit : Deletes detected repository
 change_repo : Changes working repository
 scoop_setup : Sets up scoop console app
 zip_repo : Zips the current repository and names it
+encode_file : Encodes file if you have `upm_coder.exe`
+decode_file : Decodes file if any are in encoded folder
       ''')
       file.close()
 
@@ -334,6 +353,16 @@ zip_repo : Zips the current repository and names it
         commands.track(sys.argv[2])
       except Exception as e:
         print(f"Please provide proper parameters : track 'C:/project/users.txt' \n{e}\n")
+    elif sys.argv[1] == 'encode_file':
+      try:
+        commands.code_file(sys.argv[2], 'encode')
+      except IndexError:
+        print("Please provide proper parameters : encode_file 'C:/project/manifest.txt'")
+    elif sys.argv[1] == 'decode_file':
+      try:
+        commands.code_file(sys.argv[2], 'decode')
+      except IndexError:
+        print("Please provide proper parameters : decode_file 'C:/project/manifest.txt'")
     elif sys.argv[1] == 'untrack':
       try:
         commands.untrack(sys.argv[2])
