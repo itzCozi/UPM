@@ -228,6 +228,7 @@ class commands:
       sys.exit(1)
     if os.path.exists(globals.upm_files.readme_file):
       print('ERROR: File already exists in repository')
+      sys.exit(1)
     
     try:
       with open (globals.upm_files.readme_file, 'w') as file:
