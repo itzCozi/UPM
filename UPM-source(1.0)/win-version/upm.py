@@ -25,6 +25,7 @@ class globals:
     encoded_Dir = str(f'{repository}/encoded')
     commits = str(f'{repository}/commits')
     builds = str(f'{repository}/builds')
+    readme_file = f'{globals.upm_files.repository}/README.md'
     changes_File = str(f'{repository}/changes.txt')
 
 
@@ -90,6 +91,8 @@ class commands:
           open(new_File, 'w')
         with open(f'{commit_Dir}/{tracked_path}', 'w') as _file:
           _file.write(open(tracked_path, 'r').read())
+      with open(f'{globals.upm_files.changes_File}', 'a') as log:
+        log.write(f'{commit_Dir} | New commit has been made AT - {globals.now}')
       print(f'{commit_Dir} | New commit has been made.')
       return True
 
@@ -163,6 +166,8 @@ class commands:
           open(new_File, 'w')
         with open(f'{build_Dir}/{tracked_path}', 'w') as _file:
           _file.write(open(tracked_path, 'r').read())
+      with open(f'{globals.upm_files.changes_File}', 'a') as log:
+        log.write(f'{build_Dir} | New build has been created AT - {globals.now}')
       print(f'{build_Dir} | New build has been created.')
       return True
 
@@ -193,6 +198,8 @@ class commands:
     dummy_repo = str(f'{globals.upm_files.current_Dir}/{repo}')
     if os.path.exists(dummy_repo):
       globals.upm_files.current_repository = str(repo)
+      with open(f'{globals.upm_files.changes_File}', 'a') as log:
+        log.write(f'{repo} | Working repository has been changed AT - {globals.now}')
       print(f'{repo} | Working repository has been changed.')
     else:
       print('ERROR: Given repository doesnt exist in current directory')
@@ -200,14 +207,15 @@ class commands:
 
   @staticmethod
   def clear_changes():
-    # Clear the changes file
+    # Clears the changes file
     changes_file = globals.upm_files.changes_File
     try:
       if os.path.exists(changes_file):
         with open(f'{changes_file}', 'a') as file:
           file.truncate(0)
-          file.write('Changes file cleared! \n\n')
+          file.write(f'Changes file cleared! AT - {globals.now}')
           file.close()
+        print('Changes file has been cleared.')
     except Exception as e:
       print(f'ERROR: Could not access changes file. \n{e}\n')
       sys.exit(1)
@@ -215,30 +223,46 @@ class commands:
   @staticmethod
   def add_readme():
     # Add a readme.md to your current repo
-    readme_file = f'{globals.upm_files.repository}/README.md'
-    open(readme_file, 'x')
+    if not os.path.exists(globals.upm_files.repository):
+      print('ERROR: There is no repository detected.')
+      sys.exit(1)
+    if os.path.exists(globals.upm_files.readme_file):
+      print('ERROR: File already exists in repository')
     
-    with open (readme_file, 'r+') as file:
-      file.write('Please edit this `README.md` made by upm.')
-      file.close()
-
-  @staticmethod
-  def scoop_setup():\
-    # Setup the scoop app
     try:
-      driver.scoopSetup()
-      print('Scoop app setup use `upm` to call to it.')
+      with open (globals.upm_files.readme_file, 'w') as file:
+        file.write('Please edit this `README.md` made by upm.')
+        file.close()
+      with open(f'{globals.upm_files.changes_File}', 'a') as log:
+        log.write(f'{globals.upm_files.readme_file} | README.md file created - AT {globals.now}')
+      print(f'{globals.upm_files.readme_file} | README.md file created.')
     except Exception as e:
-      print(f'ERROR: Could not setup scoop app. \n{e}\n')
+      print(f'ERROR: Could not create new file \n{e}\n')
       sys.exit(1)
 
   @staticmethod
-  def uninit():
+  def scoop_setup():
+    # Setup the scoop app
+    if not os.path.exists(globals.scoopApp_Dir):
+      try:
+        driver.scoopSetup()
+        print('Scoop app setup use `upm` to call to it.')
+      except Exception as e:
+        print(f'ERROR: Could not setup scoop app. \n{e}\n')
+        sys.exit(1)
+    else:
+      print('ERROR: The scoop `upm` app is already detected.')
+      sys.exit(1)
+
+  @staticmethod
+  def uninit(repo):
     # Deletes the repository
     try:
       for dir in os.listdir(globals.upm_files.current_Dir):
-        if dir == 'upm':
+        if dir == str(repo):
           shutil.rmtree(dir)
+          with open(f'{globals.upm_files.changes_File}', 'a') as log:
+            log.write(f'Repository {dir} has been deleted AT - {globals.now}')
           print(f'Repository {dir} has been deleted.')
           break
         else:
@@ -257,6 +281,8 @@ class commands:
       print('Zip already created.')
     else:
       zip_obj
+      with open(f'{globals.upm_files.changes_File}', 'a') as log:
+        log.write(f'Zip named {name} created AT - {globals.now}')
       print(f'Zip called {name} created.')
   
   @staticmethod
@@ -271,8 +297,12 @@ class commands:
     try:
       if decode_encode == 'encode':
         os.system(f'./upm_coder encode {file}')
+        with open(f'{globals.upm_files.changes_File}', 'a') as log:
+          log.write(f'Encoded file: {file} AT - {globals.now}')
       if decode_encode == 'decode':
         os.system(f'./upm_coder decode {file}')
+        with open(f'{globals.upm_files.changes_File}', 'a') as log:
+          log.write(f'Decoded file: {file} AT - {globals.now}')
       else:
         print(f'ERROR: {decode_encode} is not a vaild input try decode or encode.')
     except Exception as e:
@@ -351,8 +381,6 @@ add_readme : Adds a `README.md` file to the repository
   def argHandler():
     if sys.argv[1] == 'init':
       commands.init()
-    elif sys.argv[1] == 'uninit':
-      commands.uninit()
     elif sys.argv[1] == 'about':
       commands.about()
     elif sys.argv[1] == 'clear_changes':
@@ -361,6 +389,11 @@ add_readme : Adds a `README.md` file to the repository
       commands.scoop_setup()
     elif sys.argv[1] == 'add_readme':
       commands.add_readme()
+    elif sys.argv[1] == 'uninit':
+      try:
+        commands.uninit(sys.argv[2])
+      except Exception as e:
+        print(f"Please provide proper parameters : uninit 'upm' \n{e}\n")
     elif sys.argv[1] == 'commit':
       try:
         commands.commit(sys.argv[2], sys.argv[3])
