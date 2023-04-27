@@ -310,16 +310,20 @@ class commands:
 			sys.exit(1)
 
 	@staticmethod
-	def filter_file(file, word):
-		with open(file, "r+") as Fin:
-			content = Fin.read()
-		if content.find(word) is True:
-			for word in content:
-				write_item = content.replace(word, '')
-				Fin.write(write_item)
-			Fin.close()
-		else:
-			pass
+  def filter_file(file, word):
+    if not os.path.exists(file):
+      print(f"ERROR: Given file {file} cannot be found.")
+      sys.exit(1)
+
+    with open(file, "r+") as Fin:
+      content = Fin.read()
+    if word in content:
+      with open(file, "w+") as Fout:
+        write_item = content.replace(word, "")
+        Fout.write(write_item)
+    else:
+      print(f"ERROR: {word} cannot be found in {file}.")
+      sys.exit(1)
 
 
 class driver:
