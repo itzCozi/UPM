@@ -309,6 +309,18 @@ class commands:
 			print(f'ERROR: Could not pass command through system. \n{e}\n')
 			sys.exit(1)
 
+	@staticmethod
+	def filter_file(file, word):
+		with open(file, "r+") as Fin:
+			content = Fin.read()
+		if content.find(word) is True:
+			for word in content:
+				write_item = content.replace(word, '')
+				Fin.write(write_item)
+			Fin.close()
+		else:
+			pass
+
 
 class driver:
 
@@ -439,11 +451,15 @@ add_readme : Adds a `README.md` file to the repository
 				commands.zip_repo(sys.argv[2])
 			except Exception as e:
 				print(f"Please provide proper parameters : zip_repo 'C:/upm' Obama-Coding16 \n{e}\n")
+		elif sys.argv[1] == 'filter_file':
+			try:
+				commands.filter_file(sys.argv[2], sys.argv[3])
+			except Exception as e:
+				print(f"Please provide proper parameters : filter_file 'C:/test.txt' 'pizza' \n{e}\n")
 
 		else:
 			print("To use upm you must pass valid arguments via the command-line such as: \
-        \npython upm.py track 'happy-420/snoop.cpp'")
-
+				\npython upm.py track 'happy-420/snoop.cpp'")
 
 if __name__ == '__main__':
 	try:
