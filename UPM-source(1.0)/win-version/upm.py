@@ -186,7 +186,7 @@ class commands:
 					print(f'{file_name} | Saved file has been updated.')
 					return True
 			except Exception as e:
-				print(f'ERROR: Counld not access files, Maybe try as admin. \n{e}\n')
+				print(f'ERROR: Could not access files, Maybe try as admin. \n{e}\n')
 				sys.exit(1)
 		else:
 			print('ERROR: Given file is not being tracked.')
@@ -304,7 +304,7 @@ class commands:
 				with open(f'{vars.upm_files.changes_File}', 'a') as log:
 					log.write(f'Decoded file: {file} AT - {vars.now}')
 			else:
-				print(f'ERROR: {decode_encode} is not a vaild input try decode or encode.')
+				print(f'ERROR: {decode_encode} is not a valid input try decode or encode.')
 		except Exception as e:
 			print(f'ERROR: Could not pass command through system. \n{e}\n')
 			sys.exit(1)
@@ -360,14 +360,14 @@ class driver:
 			file.write('''
 Commands | Description
 init : Creates `upm` folder and repository
-about : Displays relitive context
+about : Displays relative context
 commit : Create a new commit with given name
 track : Starts saving given file
 untrack : Removes given save file
 update : Update the given tracked file
 build : Create a new build and store it in repository
 clear_changes : Wipes the changes file
-uninit : Deletes repository in current directory with given name
+uninit : Deletes detected repository
 change_repo : Changes working repository
 scoop_setup : Sets up scoop console app
 zip_repo : Zips the current repository and names it
