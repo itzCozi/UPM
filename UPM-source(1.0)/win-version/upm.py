@@ -367,7 +367,7 @@ untrack : Removes given save file
 update : Update the given tracked file
 build : Create a new build and store it in repository
 clear_changes : Wipes the changes file
-uninit : Deletes detected repository
+uninit : Deletes repository in current directory with given name
 change_repo : Changes working repository
 scoop_setup : Sets up scoop console app
 zip_repo : Zips the current repository and names it
