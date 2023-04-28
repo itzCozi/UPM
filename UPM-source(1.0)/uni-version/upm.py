@@ -302,6 +302,7 @@ clear_changes : Wipes the changes file
 uninit : Deletes detected repository
 zip_repo : Zips the repository and names it
 add_readme : Adds a `README.md` file to the repository
+filter_file : Looks for given word in file and removes it
       ''')
       file.close()
 

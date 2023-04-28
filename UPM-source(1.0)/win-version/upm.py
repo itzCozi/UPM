@@ -390,6 +390,7 @@ zip_repo : Zips the current repository and names it
 encode_file : Encodes file if you have `upm_coder.exe`
 decode_file : Decodes file if any are in encoded folder
 add_readme : Adds a `README.md` file to the repository
+filter_file : Looks for given word in file and removes it
       ''')
       file.close()
 
