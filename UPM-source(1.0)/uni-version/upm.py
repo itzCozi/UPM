@@ -298,6 +298,7 @@ track : Starts saving given file
 untrack : Removes given save file
 update : Update the given tracked file
 build : Create a new build and store it in repository
+change_repo : Changes working repository
 clear_changes : Wipes the changes file
 uninit : Deletes detected repository
 zip_repo : Zips the repository and names it
