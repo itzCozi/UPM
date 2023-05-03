@@ -296,11 +296,11 @@ class commands:
 
     try:
       if decode_encode == 'encode':
-        os.system(f'% ./"upm_coder.exe" encode {file}')
+        os.system(f'powershell % ./"upm_coder.exe" encode {file}')
         with open(f'{vars.upm_files.changes_File}', 'a') as log:
           log.write(f'Encoded file: {file} AT - {vars.now}')
       if decode_encode == 'decode':
-        os.system(f'% ./"upm_coder.exe" decode {file}')
+        os.system(f'powershell % ./"upm_coder.exe" decode {file}')
         with open(f'{vars.upm_files.changes_File}', 'a') as log:
           log.write(f'Decoded file: {file} AT - {vars.now}')
       else:
