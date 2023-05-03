@@ -1,12 +1,4 @@
-"""
-INPUT/OUTPUT
-./upm_coder encode_file HELP.txt
-This program can only encode tracked files.
-
-This error is throw for both functions though when ran through UPM
-The errror is diffrent due to how i handled exceptions, There must be a
-Faulty exception here find it and add mroe except statments and reliable code
-"""
+# TODO: Recompile and test arg handler since arg indexs change after compiling!
 
 import os, sys
 
@@ -97,7 +89,7 @@ class encode_decode:
       if 'o' in letter:
         return 'o'
       if 'O' in letter:
-        return 'o'
+        return 'O'
     if 'p70' or 'P71' in letter:
       if 'p' in letter:
         return 'p'
@@ -173,30 +165,46 @@ class encode_decode:
     if '90' in letter:
       return '9'
     
-    if ';' in letter:
-      return '!'
+    if '!' in letter:
+      return ';'
+    if '@' in letter:
+      return '**'
+    if '#' in letter:
+      return ':-'
+    if '$' in letter:
+      return '::'
+    if '%' in letter:
+      return '&*'
+    if '^' in letter:
+      return '@-'
+    if '&' in letter:
+      return '!<'
     if '*' in letter:
-      return '@'
-    if ':-' in letter:
-      return '#'
-    if '::' in letter:
-      return '$'
-    if '&*' in letter:
-      return '%'
-    if '@-' in letter:
-      return '^'
-    if '!<' in letter:
-      return '&'
-    if '_-_' in letter:
-      return '*'
-    if '|' in letter:
-      return '('
-    if '--' in letter:
-      return '-'
+      return '_-_'
+    if '|/' or '\|' in letter:
+      if '|/' in letter:
+        return '('
+      if '\|' in letter:
+        return ')'
+    if '--' or '__' in letter:
+      if '--' in letter:
+        return '-'
+      if '__' in letter:
+        return '_'
     if '++' in letter:
       return '+'
-    if '=' in letter:
+    if '=?' in letter:
       return '='
+    if '\{' in letter:
+      return '{'
+    if '}/' in letter:
+      return '}'
+    if '\\[' in letter:
+      return '['
+    if ']//' in letter:
+      return ']'
+    if '//;\\' in letter:
+      return ';'
     
     else:
       pass
@@ -356,7 +364,7 @@ class encode_decode:
     if '!' in letter:
       return ';'
     if '@' in letter:
-      return '*'
+      return '**'
     if '#' in letter:
       return ':-'
     if '$' in letter:
@@ -370,20 +378,38 @@ class encode_decode:
     if '*' in letter:
       return '_-_'
     if '(' or ')' in letter:
-      return '|'
+      if '(' in letter:
+        return '|/'
+      if ')' in letter:
+        return '\|'
     if '-' or '_' in letter:
-      return '--'
+      if '-' in letter:
+        return '--'
+      if '_' in letter:
+        return '__'
     if '+' in letter:
       return '++'
     if '=' in letter:
       return '=?'
+    if '{' in letter:
+      return '\{'
+    if '}' in letter:
+      return '}/'
+    if '[' in letter:
+      return '\\['
+    if ']' in letter:
+      return ']//'
+    if ';' in letter:
+      return '//;\\'
     
     else:
       return letter
 
 
-  def decode_file(file):
-    if not os.path.exists(f'{encoded_Dir}/{file}'):
+  def decode_file(rawfile):
+    file = f'{tracked_Dir}/{rawfile}'
+    encoded = f'{encoded_Dir}/{rawfile}'
+    if not os.path.exists(file):
       print('ERROR: File not in encoded folder.')
       sys.exit(1)
     if os.path.getsize(file) == 0:
@@ -402,14 +428,17 @@ class encode_decode:
             if letter.isalpha():
               write_back = write_back.replace(str(letter), str(encode_decode.detick(letter)))
 
-      with open(f'{tracked_Dir}/{file}', 'w') as Fout:
+      with open(encoded, 'w') as Fout:
         print(f'Decoded {file_name} and created tracked file.')
         Fout.write(write_back)
         File.close()
 
 
-  def encode_file(file):
-    if not os.path.exists(f'{tracked_Dir}/{file}'):
+  def encode_file(rawfile):
+    file = f'{tracked_Dir}/{rawfile}'
+    encoded = f'{encoded_Dir}/{rawfile}'
+    print(file)
+    if not os.path.exists(file):
       print('ERROR: File not tracked.')
       sys.exit(1)
     if os.path.getsize(file) == 0:
@@ -428,27 +457,36 @@ class encode_decode:
             if letter.isalpha():
               write_back = write_back.replace(str(letter), (encode_decode.tick(letter)))
 
-      with open(f'{encoded_Dir}/{file}', 'w') as Fout:
+      with open(encoded, 'w') as Fout:
         print(f'Encoded {file_name} and created encoded file.')
         Fout.write(write_back)
         File.close()
 
 
 try:
-  if sys.argv[1] == 'encode':
-    encode_decode.encode_file(sys.argv[2])
-    sys.exit(0)
-  if sys.argv[1] == 'decode':
-    encode_decode.decode_file(sys.argv[2])
-    sys.exit(0)
-  else:
-    print('This program can only encode tracked files.')
-    sys.exit(1)
+  if sys.argv[1].lower() == 'encode' or sys.argv[0].lower() == 'encode':
+    if sys.argv[0].lower() == 'encode':
+      encode_decode.encode_file(sys.argv[1])
+      sys.exit(0)
+    if sys.argv[1].lower() == 'encode':
+      encode_decode.encode_file(sys.argv[2])
+      sys.exit(0)
+    else:
+      print("ERROR: Given argument is not recognized, try 'encode' or 'decode'. ")
+  if sys.argv[1].lower() == 'decode' or sys.argv[0].lower() == 'decode':
+    if sys.argv[0].lower() == 'decode':
+      encode_decode.decode_file(sys.argv[1])
+      sys.exit(0)
+    if sys.argv[1].lower() == 'decode':
+      encode_decode.decode_file(sys.argv[2])
+      sys.exit(0)
+    else:
+      print("ERROR: Given argument is not recognized, try 'encode' or 'decode'. ")
+      
 except IndexError:
-  print('You must pass `encode` or `decode` argument \
-    \nfollowed by a file path to encode a tracked file.')
+  print("You must pass 'encode' or 'decode' argument \
+    \nfollowed by a file path to encode a tracked file.")
   sys.exit(1)
 except Exception as e:
   print(f'CRIT-ERROR: A unkown runtime-error occurred. \n{e}\n')
   sys.exit(1)
-  

@@ -314,15 +314,18 @@ class commands:
     if not os.path.exists(file):
       print(f"ERROR: Given file {file} cannot be found.")
       sys.exit(1)
-
-    with open(file, "r+") as Fin:
-      content = Fin.read()
-    if word in content:
-      with open(file, "w+") as Fout:
-        write_item = content.replace(word, "")
-        Fout.write(write_item)
-    else:
-      print(f"ERROR: {word} cannot be found in {file}.")
+    try:
+      with open(file, "r+") as Fin:
+        content = Fin.read()
+      if word in content:
+        with open(file, "w+") as Fout:
+          write_item = content.replace(word, "")
+          Fout.write(write_item)
+      else:
+        print(f"ERROR: {word} cannot be found in {file}.")
+        sys.exit(1)
+    except Exception as e:
+      print(f'ERROR: An unkown error occured when running command. \n{e}\n')
       sys.exit(1)
 
 
