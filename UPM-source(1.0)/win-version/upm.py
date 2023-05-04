@@ -286,30 +286,6 @@ class commands:
       print(f'Zip called {name} created.')
 
   @staticmethod
-  def code_file(file, decode_encode):
-    # Automate encoding or decoding files if you have `upm_coder.exe`
-    if not os.path.exists(f'{vars.upm_files.current_Dir}/upm_coder.exe'):
-      print('ERROR: upm_coder.exe not found in current directory.\
-        \nupm_coder.exe can be found on UPM github in releases  \
-        \nsimply pass the `about` command and follow the link')
-      sys.exit(1)
-
-    try:
-      if decode_encode == 'encode':
-        os.system(f'powershell % ./"upm_coder.exe" encode {file}')
-        with open(f'{vars.upm_files.changes_File}', 'a') as log:
-          log.write(f'Encoded file: {file} AT - {vars.now}')
-      if decode_encode == 'decode':
-        os.system(f'powershell % ./"upm_coder.exe" decode {file}')
-        with open(f'{vars.upm_files.changes_File}', 'a') as log:
-          log.write(f'Decoded file: {file} AT - {vars.now}')
-      else:
-        print(f'ERROR: {decode_encode} is not a valid input try decode or encode.')
-    except Exception as e:
-      print(f'ERROR: Could not pass command through system. \n{e}\n')
-      sys.exit(1)
-
-  @staticmethod
   def filter_file(file, word):
     if not os.path.exists(file):
       print(f"ERROR: Given file {file} cannot be found.")
@@ -390,8 +366,6 @@ uninit : Deletes detected repository
 change_repo : Changes working repository
 scoop_setup : Sets up scoop console app
 zip_repo : Zips the current repository and names it
-encode_file : Encodes file if you have `upm_coder.exe`
-decode_file : Decodes file if any are in encoded folder
 add_readme : Adds a `README.md` file to the repository
 filter_file : Looks for given word in file and removes it
       ''')
@@ -424,16 +398,6 @@ filter_file : Looks for given word in file and removes it
         commands.track(sys.argv[2])
       except Exception as e:
         print(f"Please provide proper parameters : track 'C:/project/users.txt' \n{e}\n")
-    elif sys.argv[1] == 'encode_file':
-      try:
-        commands.code_file(sys.argv[2], 'encode')
-      except IndexError:
-        print("Please provide proper parameters : encode_file 'C:/project/manifest.txt'")
-    elif sys.argv[1] == 'decode_file':
-      try:
-        commands.code_file(sys.argv[2], 'decode')
-      except IndexError:
-        print("Please provide proper parameters : decode_file 'C:/project/manifest.txt'")
     elif sys.argv[1] == 'untrack':
       try:
         commands.untrack(sys.argv[2])
