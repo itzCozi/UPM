@@ -287,6 +287,7 @@ class commands:
 
   @staticmethod
   def filter_file(file, word):
+    # Search a file for given word and remove it
     if not os.path.exists(file):
       print(f"ERROR: Given file {file} cannot be found.")
       sys.exit(1)
